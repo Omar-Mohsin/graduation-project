@@ -3,19 +3,24 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '@/redux/products/productsSlice';
 import { SelectAllProducts } from '@/redux/products/productsSlice';
+import { addToCart } from '@/redux/cart/cartSlice';
 import styled from 'styled-components';
 
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
-  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     dispatch(fetchProducts());
-    setTimeout(() => {
-      setIsReady(true);
-    }, 200);
+   
   }, []);
+
+
+  const addButtonHandler =(product)=> { 
+      
+    dispatch(addToCart(product))
+
+  }
 
   return (
     <Container>
@@ -28,7 +33,7 @@ const Page = () => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              <AddToCartButton>Add to Cart</AddToCartButton>
+              <AddToCartButton onClick={()=>{addButtonHandler(product)}}>Add to Cart</AddToCartButton>
               <MoreInfoButton>More Info</MoreInfoButton>
             </div>
           </ProductCard>
