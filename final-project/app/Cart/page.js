@@ -26,6 +26,27 @@ function Page() {
     dispatch(removeFromCart(product.id));
   };
 
+
+  const totalPrice = (product) => {
+    const newArray = cart.filter((item) => item.id === product.id);
+    const ArrayLength = newArray.length;
+    const total = ArrayLength * product.price;
+    return total;
+  };
+
+  const subtotal = Math.round(
+    filteredCart.reduce((acc, product) => {
+      return acc + totalPrice(product);
+    }, 0)
+  );
+
+  const taxRate = 0.06;
+  const tax = Math.round(subtotal * taxRate);
+  const grandTotal = Math.round(subtotal + tax);
+
+
+
+
   return (
     <CartContainer className={isLoaded ? 'loaded' : ''}>
       {cart.length > 0 ? (
@@ -58,6 +79,8 @@ function Page() {
               </ShoppingCart>
             </Product>
           ))}
+          <CheckoutButton>Checkout</CheckoutButton>
+
         </div>
       ) : (
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
@@ -72,28 +95,29 @@ const CartContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   height: 100vh;
+  margin: 0 auto;
+
 
   .cart-items {
-    margin-top : 50px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     width: 100%;
     opacity: 0;
-    transform: translateX(-100%); 
+    transform: translateX(-100%);
     transition: opacity 0.5s, transform 0.5s;
   }
 
   &.loaded .cart-items {
     opacity: 1;
-    transform: translateX(0); 
+    transform: translateX(0);
   }
 `;
 
 const Product = styled.div`
   width: 100%;
   border: 1px solid #eee;
-  padding: 20px;
+  padding: 40px;
   margin: 10px;
   border-radius: 5px;
   background-color: #f9f9f9;
@@ -112,7 +136,7 @@ const ShoppingCart = styled.div`
 const ProductImage = styled.div`
   flex: 1;
   img {
-    max-width: 100px;
+    max-width: 150px;
     height: auto;
     border-radius: 5px;
   }
@@ -138,13 +162,13 @@ const ProductPrice = styled.div`
   font-size: 1.2rem;
   font-weight: 600;
   color: #ff5722;
-  margin-right : 15px;
+  margin-right: 15px;
 `;
 
 const ProductQuantity = styled.div`
   display: flex;
   align-items: center;
-  
+
   button {
     background: #fff;
     border: 1px solid #ddd;
@@ -152,14 +176,9 @@ const ProductQuantity = styled.div`
     padding: 8px;
     font-size: 1.2rem;
     cursor: pointer;
-    &:hover {
-      background: #ff5722;
-      color: #fff;
-    }
   }
 
   input {
-   
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 8px;
@@ -189,4 +208,22 @@ const EmptyCartMessage = styled.div`
   font-size: 1.2rem;
   color: #666;
   padding: 20px;
+`;
+
+const CheckoutButton = styled.button`
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 1.5rem;
+  border: none;
+  width : 250px;
+  height : 90px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-left: auto; 
+  &:hover {
+    background-color: #45a049;
+  }
 `;

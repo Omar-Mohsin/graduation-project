@@ -1,10 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '@/redux/products/productsSlice';
 import { SelectAllProducts } from '@/redux/products/productsSlice';
 import { addToCart } from '@/redux/cart/cartSlice';
 import styled from 'styled-components';
+import { Footer } from '@/components';
 
 const Page = () => {
   const products = useSelector(SelectAllProducts);
@@ -12,12 +13,12 @@ const Page = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-   
+
   }, []);
 
 
-  const addButtonHandler =(product)=> { 
-      
+  const addButtonHandler = (product) => {
+
     dispatch(addToCart(product))
 
   }
@@ -33,12 +34,14 @@ const Page = () => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              <AddToCartButton onClick={()=>{addButtonHandler(product)}}>Add to Cart</AddToCartButton>
+              <AddToCartButton onClick={() => { addButtonHandler(product) }}>Add to Cart</AddToCartButton>
               <MoreInfoButton>More Info</MoreInfoButton>
             </div>
           </ProductCard>
         ))}
       </div>
+      <Footer />
+
     </Container>
   );
 };
