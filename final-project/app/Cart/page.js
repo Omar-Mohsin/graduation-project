@@ -1,8 +1,12 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { SelectAllCart, addToCart, removeFromCart } from '@/redux/cart/cartSlice';
-import styled from 'styled-components';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  SelectAllCart,
+  addToCart,
+  removeFromCart,
+} from "@/redux/cart/cartSlice";
+import styled from "styled-components";
 
 function Page() {
   const cart = useSelector(SelectAllCart);
@@ -26,7 +30,6 @@ function Page() {
     dispatch(removeFromCart(product.id));
   };
 
-
   const totalPrice = (product) => {
     const newArray = cart.filter((item) => item.id === product.id);
     const ArrayLength = newArray.length;
@@ -44,11 +47,8 @@ function Page() {
   const tax = Math.round(subtotal * taxRate);
   const grandTotal = Math.round(subtotal + tax);
 
-
-
-
   return (
-    <CartContainer className={isLoaded ? 'loaded' : ''}>
+    <CartContainer className={isLoaded ? "loaded" : ""}>
       {cart.length > 0 ? (
         <div className="cart-items">
           {filteredCart.map((product) => (
@@ -60,27 +60,32 @@ function Page() {
                 <ProductDetails>
                   <ProductTitle>{product.title}</ProductTitle>
                   <ProductDescription>{product.description}</ProductDescription>
+                
                 </ProductDetails>
                 <ProductPrice>${product.price}</ProductPrice>
                 <ProductQuantity>
-                  <button onClick={() => handleDecreaseQuantity(product)}>-</button>
+                  <button onClick={() => handleDecreaseQuantity(product)}>
+                    -
+                  </button>
                   <input
                     type="text"
                     value={cart.filter((item) => item.id === product.id).length}
                     readOnly
                   />
-                  <button onClick={() => handleIncreaseQuantity(product)}>+</button>
+                  <button onClick={() => handleIncreaseQuantity(product)}>
+                    +
+                  </button>
                 </ProductQuantity>
                 <RemoveProductButton
                   onClick={() => handleDecreaseQuantity(product)}
                 >
                   Remove
                 </RemoveProductButton>
+                <TotalPrice>${totalPrice(product)}</TotalPrice>
               </ShoppingCart>
             </Product>
           ))}
           <CheckoutButton>Checkout</CheckoutButton>
-
         </div>
       ) : (
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
@@ -96,7 +101,6 @@ const CartContainer = styled.div`
   flex-wrap: wrap;
   height: 100vh;
   margin: 0 auto;
-
 
   .cart-items {
     display: flex;
@@ -117,13 +121,17 @@ const CartContainer = styled.div`
 const Product = styled.div`
   width: 100%;
   border: 1px solid #eee;
-  padding: 40px;
-  margin: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+  margin : 10px;
+  border-radius: 10px;
+  background-color: #fff;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.005);
+  }
 `;
 
 const ShoppingCart = styled.div`
@@ -143,26 +151,28 @@ const ProductImage = styled.div`
 `;
 
 const ProductDetails = styled.div`
-  flex: 2;
-  padding: 0 20px;
+  flex: 1.5;
+  padding: 20px;
 `;
 
 const ProductTitle = styled.div`
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 5px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #333;
 `;
 
 const ProductDescription = styled.p`
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #666;
+  margin-bottom: 12px;
 `;
 
 const ProductPrice = styled.div`
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #ff5722;
-  margin-right: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #e44d26;
+  margin-right : 20px;
 `;
 
 const ProductQuantity = styled.div`
@@ -189,7 +199,7 @@ const ProductQuantity = styled.div`
 `;
 
 const RemoveProductButton = styled.button`
-  background-color: #e74c3c;
+  background-color: red;
   color: #fff;
   font-size: 1rem;
   border: none;
@@ -198,9 +208,19 @@ const RemoveProductButton = styled.button`
   cursor: pointer;
   transition: background-color 0.3s;
   margin-left: 15px;
+  margin-right: 30px;
+
   &:hover {
     background-color: #c0392b;
   }
+`;
+
+const TotalPrice = styled.p`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-left: auto;
+  margin-right: 20px;
 `;
 
 const EmptyCartMessage = styled.div`
@@ -215,14 +235,14 @@ const CheckoutButton = styled.button`
   color: #fff;
   font-size: 1.5rem;
   border: none;
-  width : 250px;
-  height : 90px;
+  width: 250px;
+  height: 90px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 20px;
   margin-right: 20px;
-  margin-left: auto; 
+  margin-left: auto;
   &:hover {
     background-color: #45a049;
   }
