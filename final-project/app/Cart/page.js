@@ -12,6 +12,7 @@ function Page() {
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default currency
 
   const filteredCart = cart.filter(
     (item, index) => cart.indexOf(item) === index
@@ -22,6 +23,11 @@ function Page() {
     }, 100);
   }, []);
 
+  const toggleCurrency = () => {
+    setSelectedCurrency((prevCurrency) =>
+      prevCurrency === "JPY" ? "USD" : "JPY"
+    );
+  };
   const handleIncreaseQuantity = (product) => {
     dispatch(addToCart(product));
   };
@@ -51,6 +57,16 @@ function Page() {
     <CartContainer className={isLoaded ? "loaded" : ""}>
       {cart.length > 0 ? (
         <div className="cart-items">
+          <SwitchHolder>
+            <ToggleCurrencySwitch>
+              <ToggleCurrencyInput
+                type="checkbox"
+                checked={selectedCurrency === "USD"}
+                onChange={toggleCurrency}
+              />
+              <ToggleCurrencySlider checked={selectedCurrency === "USD"} />
+            </ToggleCurrencySwitch>
+          </SwitchHolder>
           {filteredCart.map((product) => (
             <Product key={product.id}>
               <ShoppingCart>
@@ -60,7 +76,6 @@ function Page() {
                 <ProductDetails>
                   <ProductTitle>{product.title}</ProductTitle>
                   <ProductDescription>{product.description}</ProductDescription>
-                
                 </ProductDetails>
                 <ProductPrice>${product.price}</ProductPrice>
                 <ProductQuantity>
@@ -101,27 +116,70 @@ const CartContainer = styled.div`
   flex-wrap: wrap;
   height: 100vh;
   margin: 0 auto;
-
-  .cart-items {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: opacity 0.5s, transform 0.5s;
-  }
-
-  &.loaded .cart-items {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  background-color: #f4f4f4;
+  padding: 20px;
 `;
 
+const ToggleCurrencySwitch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 70px; /* increased width */
+  height: 38px; /* increased height */
+  margin-left: auto; /* Move the switch to the right */
+`;
+const SwitchHolder = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+const ToggleCurrencySlider = styled.span`
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #3498db;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  transition: background-color 0.4s;
+  font-size: 0.7rem;
+
+  &:before {
+    content: "${({ checked }) => (checked ? "USD" : "JPY")}";
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    left: ${({ checked }) => (checked ? "38px" : "4px")};
+    bottom: 4px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: ${({ checked }) => (checked ? "#2ecc71" : "#333")};
+  }
+`;
+const ToggleCurrencyInput = styled.input`
+  display: none;
+
+  &:checked + ${ToggleCurrencySlider} {
+    background-color: #2ecc71;
+  }
+
+  &:checked + ${ToggleCurrencySlider}:before {
+    transform: translateX(1px);
+  }
+`;
 const Product = styled.div`
   width: 100%;
   border: 1px solid #eee;
-  margin : 10px;
+  margin: 10px;
   border-radius: 10px;
   background-color: #fff;
   display: flex;
@@ -172,7 +230,7 @@ const ProductPrice = styled.div`
   font-size: 1.4rem;
   font-weight: 700;
   color: #e44d26;
-  margin-right : 20px;
+  margin-right: 20px;
 `;
 
 const ProductQuantity = styled.div`
@@ -225,7 +283,7 @@ const TotalPrice = styled.p`
 
 const EmptyCartMessage = styled.div`
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: #666;
   padding: 20px;
 `;
@@ -235,14 +293,12 @@ const CheckoutButton = styled.button`
   color: #fff;
   font-size: 1.5rem;
   border: none;
-  width: 250px;
-  height: 90px;
+  width: 100%;
+  height: 60px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
   margin-top: 20px;
-  margin-right: 20px;
-  margin-left: auto;
   &:hover {
     background-color: #45a049;
   }
