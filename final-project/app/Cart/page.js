@@ -12,7 +12,7 @@ function Page() {
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD"); // Default currency
+  const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
 
   const filteredCart = cart.filter(
     (item, index) => cart.indexOf(item) === index
@@ -25,7 +25,7 @@ function Page() {
 
   const toggleCurrency = () => {
     setSelectedCurrency((prevCurrency) =>
-      prevCurrency === "JPY" ? "USD" : "JPY"
+      prevCurrency === "JD" ? "USD" : "JD"
     );
   };
   const handleIncreaseQuantity = (product) => {
@@ -40,7 +40,7 @@ function Page() {
     const newArray = cart.filter((item) => item.id === product.id);
     const ArrayLength = newArray.length;
     const total = ArrayLength * product.price;
-    return total;
+    return total.toFixed(2);
   };
 
   const subtotal = Math.round(
@@ -54,7 +54,7 @@ function Page() {
   const grandTotal = Math.round(subtotal + tax);
 
   return (
-    <CartContainer className={isLoaded ? "loaded" : ""}>
+    <CartContainer >
       {cart.length > 0 ? (
         <div className="cart-items">
           <SwitchHolder>
@@ -68,7 +68,7 @@ function Page() {
             </ToggleCurrencySwitch>
           </SwitchHolder>
           {filteredCart.map((product) => (
-            <Product key={product.id}>
+            <Product key={product.id} isLoaded={isLoaded}>
               <ShoppingCart>
                 <ProductImage>
                   <img src={product.image} alt={product.title} />
@@ -118,6 +118,7 @@ const CartContainer = styled.div`
   margin: 0 auto;
   background-color: #f4f4f4;
   padding: 20px;
+
 `;
 
 const ToggleCurrencySwitch = styled.label`
@@ -148,7 +149,7 @@ const ToggleCurrencySlider = styled.span`
   font-size: 0.7rem;
 
   &:before {
-    content: "${({ checked }) => (checked ? "USD" : "JPY")}";
+    content: "${({ checked }) => (checked ? "USD" : "JD")}";
     position: absolute;
     height: 30px;
     width: 30px;
@@ -189,6 +190,13 @@ const Product = styled.div`
 
   &:hover {
     transform: scale(1.005);
+  }
+
+  transform: translateX(${({ isLoaded }) => (isLoaded ? '0' : '-100%')});
+  transition: transform 0.5s ease-in-out;
+
+  &.loaded {
+    transform: translateX(0);
   }
 `;
 
@@ -286,6 +294,11 @@ const EmptyCartMessage = styled.div`
   font-size: 1.5rem;
   color: #666;
   padding: 20px;
+  margin: auto; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; 
 `;
 
 const CheckoutButton = styled.button`
