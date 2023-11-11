@@ -1,124 +1,146 @@
-'use client';
+'use client'
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-function Page() {
-  const [signInData, setSignInData] = useState({ username: '', password: '' });
-  const [signUpData, setSignUpData] = useState({ username: '', password: '' });
+// Create a keyframe animation for the page transition
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
 
-  const handleSignInSubmit = (e) => {
-    e.preventDefault();
-    console.log('Sign In Data:', signInData);
-  };
+const slideOut = keyframes`
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+`;
 
-  const handleSignUpSubmit = (e) => {
-    e.preventDefault();
-    console.log('Sign Up Data:', signUpData);
-  };
-
-  return (
-    <PageContainer>
-      <FormContainer>
-        <Form>
-          <h2>Sign In</h2>
-          <form onSubmit={handleSignInSubmit}>
-            <InputLabel>Username:</InputLabel>
-            <Input
-              type="text"
-              value={signInData.username}
-              onChange={(e) => setSignInData({ ...signInData, username: e.target.value })}
-            />
-            <InputLabel>Password:</InputLabel>
-            <Input
-              type="password"
-              value={signInData.password}
-              onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
-            />
-            <Button type="submit">Sign In</Button>
-          </form>
-        </Form>
-
-        <div style={{ width: '20px' }}></div>
-
-        <Form>
-          <h2>Sign Up</h2>
-          <form onSubmit={handleSignUpSubmit}>
-            <InputLabel>Username:</InputLabel>
-            <Input
-              type="text"
-              value={signUpData.username}
-              onChange={(e) => setSignUpData({ ...signUpData, username: e.target.value })}
-            />
-            <InputLabel>Password:</InputLabel>
-            <Input
-              type="password"
-              value={signUpData.password}
-              onChange={(e) => setSignUpData({ ...signUpData, password: e.target.value })}
-            />
-            <Button type="submit">Sign Up</Button>
-          </form>
-        </Form>
-      </FormContainer>
-    </PageContainer>
-  );
-}
-
-export default Page;
-
+// Styled components for the sign-in and sign-up pages
 const PageContainer = styled.div`
-  background-color: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
+  background-color: #f4f4f4; /* Set a light background color */
 `;
 
-const FormContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-`;
-
-const Form = styled.div`
+const PageWrapper = styled.div`
   width: 300px;
   padding: 20px;
-  background: #fff;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-  margin-right:200px;
-  &:hover {
-    transform: scale(1.02);
-  }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: ${({ isSignIn }) => (isSignIn ? slideIn : slideOut)} 0.5s ease-in-out;
 `;
 
-const InputLabel = styled.label`
-  display: block;
-  margin-bottom: 10px;
-  color: #333;
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  color: #333;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
 `;
 
 const Button = styled.button`
-  width: 100%;
-  padding: 10px;
   background-color: #3498db;
   color: #fff;
-  border: 1px solid #3498db;
-  border-radius: 4px;
+  padding: 12px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
 
   &:hover {
     background-color: #217dbb;
   }
 `;
+
+const SignUpLink = styled.span`
+  margin-top: 10px;
+  text-align: center;
+  color: #555;
+
+  &:hover {
+    color: #3498db;
+    cursor: pointer;
+  }
+`;
+
+function SignInPage({ setIsSignIn }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add your sign-in logic here
+    console.log('Signing in...', { username, password });
+  };
+
+  return (
+    <PageContainer>
+      <PageWrapper isSignIn>
+        <h2>Sign In</h2>
+        <Form onSubmit={handleSubmit}>
+          <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Button type="submit">Sign In</Button>
+        </Form>
+        <SignUpLink onClick={() => setIsSignIn(false)}>Don't have an account? Sign Up</SignUpLink>
+      </PageWrapper>
+    </PageContainer>
+  );
+}
+
+function SignUpPage({ setIsSignIn }) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add your sign-up logic here
+    console.log('Signing up...', { username, password });
+  };
+
+  return (
+    <PageContainer>
+      <PageWrapper>
+        <h2>Sign Up</h2>
+        <Form onSubmit={handleSubmit}>
+          <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Input type="password" placeholder="Confirm Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Button type="submit">Sign Up</Button>
+        </Form>
+        <SignUpLink onClick={() => setIsSignIn(true)}>Already have an account? Sign In</SignUpLink>
+      </PageWrapper>
+    </PageContainer>
+  );
+}
+
+function Page() {
+  const [isSignIn, setIsSignIn] = useState(true);
+
+  return (
+    <>
+      {isSignIn ? (
+        <SignInPage setIsSignIn={setIsSignIn} />
+      ) : (
+        <SignUpPage setIsSignIn={setIsSignIn} />
+      )}
+    </>
+  );
+}
+
+export default Page;

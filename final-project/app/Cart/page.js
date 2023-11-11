@@ -9,10 +9,29 @@ import {
 import styled from "styled-components";
 
 function Page() {
+
+  const exchangeRate = {
+    USD: 1,      // 1 USD = 1 USD
+    JD: 0.709,   // 1 USD = 0.709 JD (adjust this rate as needed)
+  };
+
+  
+  const currencySymbol = {
+    USD: "$",
+    JD: "JD",
+  };
+
+
+  const displayCurrency = (amount) => {
+    const convertedAmount = amount * exchangeRate[selectedCurrency];
+    const symbol = currencySymbol[selectedCurrency];
+    return `${symbol}${convertedAmount.toFixed(2)}`;
+  };
+
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD"); 
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
 
   const filteredCart = cart.filter(
     (item, index) => cart.indexOf(item) === index
@@ -35,26 +54,21 @@ function Page() {
   const handleDecreaseQuantity = (product) => {
     dispatch(removeFromCart(product.id));
   };
-
   const totalPrice = (product) => {
-    const newArray = cart.filter((item) => item.id === product.id);
-    const ArrayLength = newArray.length;
-    const total = ArrayLength * product.price;
-    return total.toFixed(2);
+    const count = cart.filter((item) => item.id === product.id).length;
+    return (count * product.price).toFixed(2);
   };
 
-  const subtotal = Math.round(
-    filteredCart.reduce((acc, product) => {
-      return acc + totalPrice(product);
-    }, 0)
-  );
+  const subtotal = filteredCart.reduce((acc, product) => {
+    return acc + parseFloat(totalPrice(product));
+  }, 0);
 
   const taxRate = 0.06;
-  const tax = Math.round(subtotal * taxRate);
-  const grandTotal = Math.round(subtotal + tax);
+  const tax = subtotal * taxRate;
 
+  const grandTotal = subtotal + tax;
   return (
-    <CartContainer >
+    <CartContainer>
       {cart.length > 0 ? (
         <div className="cart-items">
           <SwitchHolder>
@@ -77,7 +91,7 @@ function Page() {
                   <ProductTitle>{product.title}</ProductTitle>
                   <ProductDescription>{product.description}</ProductDescription>
                 </ProductDetails>
-                <ProductPrice>${product.price}</ProductPrice>
+                <ProductPrice>{displayCurrency(product.price)}</ProductPrice>
                 <ProductQuantity>
                   <button onClick={() => handleDecreaseQuantity(product)}>
                     -
@@ -96,11 +110,28 @@ function Page() {
                 >
                   Remove
                 </RemoveProductButton>
-                <TotalPrice>${totalPrice(product)}</TotalPrice>
+                <TotalPrice>{displayCurrency(totalPrice(product))}</TotalPrice>
               </ShoppingCart>
             </Product>
           ))}
+
+          <SummaryContainer>
+            <SummaryItem>
+              <SummaryLabel>Subtotal:</SummaryLabel>
+              <SummaryValue>{displayCurrency(subtotal)}</SummaryValue>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryLabel>Tax:</SummaryLabel>
+              <SummaryValue>{displayCurrency(tax)}</SummaryValue>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryLabel>Grand Total:</SummaryLabel>
+              <SummaryValue>{displayCurrency(grandTotal)}</SummaryValue>
+            </SummaryItem>
+          </SummaryContainer>
+          <ButttonContainer>
           <CheckoutButton>Checkout</CheckoutButton>
+          </ButttonContainer>
         </div>
       ) : (
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
@@ -114,19 +145,17 @@ export default Page;
 const CartContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: 100vh;
-  margin: 0 auto;
-  background-color: #f4f4f4;
+  height: 100%;
+  background-color: white;
   padding: 20px;
-
 `;
 
 const ToggleCurrencySwitch = styled.label`
   position: relative;
   display: inline-block;
-  width: 70px; /* increased width */
-  height: 38px; /* increased height */
-  margin-left: auto; /* Move the switch to the right */
+  width: 70px;
+  height: 38px;
+  margin-left: auto;
 `;
 const SwitchHolder = styled.div`
   display: flex;
@@ -192,8 +221,8 @@ const Product = styled.div`
     transform: scale(1.005);
   }
 
-  transform: translateX(${({ isLoaded }) => (isLoaded ? '0' : '-100%')});
-  transition: transform 0.5s ease-in-out;
+  transform: translateX(${({ isLoaded }) => (isLoaded ? "0" : "-100%")});
+  transition: transform 0.6s ease-in-out;
 
   &.loaded {
     transform: translateX(0);
@@ -208,6 +237,7 @@ const ShoppingCart = styled.div`
 `;
 
 const ProductImage = styled.div`
+margin-left : 20px;
   flex: 1;
   img {
     max-width: 150px;
@@ -294,25 +324,67 @@ const EmptyCartMessage = styled.div`
   font-size: 1.5rem;
   color: #666;
   padding: 20px;
-  margin: auto; 
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%; 
+  height: 100%;
 `;
+
+const ButttonContainer = styled.div`
+display : flex;
+justify-content : flex-end;
+margin-bottom : 50px;
+`
 
 const CheckoutButton = styled.button`
   background-color: #4caf50;
   color: #fff;
   font-size: 1.5rem;
   border: none;
-  width: 100%;
+  width: 400px;
   height: 60px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  margin-left: auto;
   margin-top: 20px;
+  transition: background-color 0.3s;
+
   &:hover {
     background-color: #45a049;
   }
+`;
+
+
+
+const SummaryContainer = styled.div`
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top:100px;
+  max-width: 400px; 
+  margin-left : auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+const SummaryItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+`;
+
+const SummaryLabel = styled.span`
+  font-size: 1.2rem;
+  color: #555;
+`;
+
+const SummaryValue = styled.span`
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
 `;
