@@ -130,7 +130,12 @@ function Page() {
             </SummaryItem>
           </SummaryContainer>
           <ButttonContainer>
-          <CheckoutButton>Checkout</CheckoutButton>
+          
+          <form >
+
+          <CheckoutButton type="submit">Checkout</CheckoutButton>
+          </form>
+          
           </ButttonContainer>
         </div>
       ) : (

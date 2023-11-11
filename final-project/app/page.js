@@ -17,6 +17,8 @@ const Page = () => {
   }, []);
 
 
+  console.log(products);
+
   const addButtonHandler = (product) => {
 
     dispatch(addToCart(product))
