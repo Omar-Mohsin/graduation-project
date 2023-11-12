@@ -1,146 +1,126 @@
-'use client'
-import React, { useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+"use client";
+import React, { useState } from "react";
+import styled from "styled-components";
 
-// Create a keyframe animation for the page transition
-const slideIn = keyframes`
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-`;
+function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-const slideOut = keyframes`
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
-`;
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-// Styled components for the sign-in and sign-up pages
-const PageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #f4f4f4; /* Set a light background color */
-`;
+    if (!email || !password) {
+      setError("Please enter your email and password.");
+      return;
+    }
 
-const PageWrapper = styled.div`
-  width: 300px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  animation: ${({ isSignIn }) => (isSignIn ? slideIn : slideOut)} 0.5s ease-in-out;
-`;
+    // TODO: Send login request to server
 
-const Form = styled.form`
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
+
+  return (
+    <SignInContainer>
+      <SignInForm onSubmit={handleSubmit}>
+        <SignInTitle>Sign In</SignInTitle>
+
+        <SignInLabel>Email</SignInLabel>
+        <SignInInput
+          type="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
+
+        <SignInLabel>Password</SignInLabel>
+        <SignInInput
+          type="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+
+        {error && <SignInError>{error}</SignInError>}
+
+        <SignInButton type="submit">Sign In</SignInButton>
+      </SignInForm>
+    </SignInContainer>
+  );
+}
+
+export default SignIn;
+
+const SignInContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: white; /* Match the background color of your navbar */
+  color: white;
 `;
 
-const Input = styled.input`
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-`;
-
-const Button = styled.button`
-  background-color: #3498db;
-  color: #fff;
-  padding: 12px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-
-  &:hover {
-    background-color: #217dbb;
-  }
-`;
-
-const SignUpLink = styled.span`
-  margin-top: 10px;
+const SignInForm = styled.form`
+  width: 500px;
+  padding: 40px;
+  border: 2px solid #000;
+  background: black;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   text-align: center;
-  color: #555;
+`;
 
-  &:hover {
-    color: #3498db;
-    cursor: pointer;
+const SignInTitle = styled.h1`
+  color: white; 
+  font-size: 36px;
+  margin-bottom: 20px;
+`;
+
+const SignInLabel = styled.label`
+  display: block;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+  font-size: 18px;
+  color: white;
+`;
+
+const SignInInput = styled.input`
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 25px;
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #2c3e50;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
   }
 `;
 
-function SignInPage({ setIsSignIn }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const SignInButton = styled.button`
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.2s ease-in-out;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your sign-in logic here
-    console.log('Signing in...', { username, password });
-  };
+  &:hover {
+    background-color: #ccc;
+  }
+`;
 
-  return (
-    <PageContainer>
-      <PageWrapper isSignIn>
-        <h2>Sign In</h2>
-        <Form onSubmit={handleSubmit}>
-          <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button type="submit">Sign In</Button>
-        </Form>
-        <SignUpLink onClick={() => setIsSignIn(false)}>Don't have an account? Sign Up</SignUpLink>
-      </PageWrapper>
-    </PageContainer>
-  );
-}
-
-function SignUpPage({ setIsSignIn }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Add your sign-up logic here
-    console.log('Signing up...', { username, password });
-  };
-
-  return (
-    <PageContainer>
-      <PageWrapper>
-        <h2>Sign Up</h2>
-        <Form onSubmit={handleSubmit}>
-          <Input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Input type="password" placeholder="Confirm Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button type="submit">Sign Up</Button>
-        </Form>
-        <SignUpLink onClick={() => setIsSignIn(true)}>Already have an account? Sign In</SignUpLink>
-      </PageWrapper>
-    </PageContainer>
-  );
-}
-
-function Page() {
-  const [isSignIn, setIsSignIn] = useState(true);
-
-  return (
-    <>
-      {isSignIn ? (
-        <SignInPage setIsSignIn={setIsSignIn} />
-      ) : (
-        <SignUpPage setIsSignIn={setIsSignIn} />
-      )}
-    </>
-  );
-}
-
-export default Page;
+const SignInError = styled.span`
+  color: #d63031;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  margin-top: 20px;
+  display: block;
+`;
