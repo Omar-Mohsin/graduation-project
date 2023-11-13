@@ -11,8 +11,8 @@ import styled from "styled-components";
 function Page() {
 
   const exchangeRate = {
-    USD: 1,      // 1 USD = 1 USD
-    JD: 0.709,   // 1 USD = 0.709 JD (adjust this rate as needed)
+    USD: 1,     
+    JD: 0.709,   
   };
 
   
@@ -70,7 +70,7 @@ function Page() {
   return (
     <CartContainer>
       {cart.length > 0 ? (
-        <div className="cart-items">
+        <div >
           <SwitchHolder>
             <ToggleCurrencySwitch>
               <ToggleCurrencyInput

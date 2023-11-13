@@ -2,21 +2,20 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useSelector , useDispatch } from 'react-redux';
-import { addUser } from '@/redux/auth/authSlice';
-function SignIn() {
 
-
-  const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignUp = () => {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = () => {
-    console.log("Email: ", email);
-    console.log("Password: ", password);
+    console.log('Full Name: ', fullName);
+    console.log('Email: ', email);
+    console.log('Password: ', password);
+  };
 
-      addUser({email , password});
-
+  const handleFullNameChange = (event) => {
+    setFullName(event.target.value);
   };
 
   const handleEmailChange = (event) => {
@@ -28,36 +27,43 @@ function SignIn() {
   };
 
   return (
-    <SignInContainer>
-      <SignInForm>
-        <SignInTitle>Sign In</SignInTitle>
-
-        <SignInLabel>Email</SignInLabel>
-        <SignInInput
+    <SignUpContainer>
+      <SignUpForm>
+        <SignUpTitle>Sign Up</SignUpTitle>
+        <SignUpInput
+          type="text"
+          placeholder="Full Name"
+          value={fullName}
+          onChange={handleFullNameChange}
+          required
+        />
+        <SignUpInput
           type="email"
+          placeholder="Email Address"
           value={email}
           onChange={handleEmailChange}
+          required
         />
-
-        <SignInLabel>Password</SignInLabel>
-        <SignInInput
+        <SignUpInput
           type="password"
+          placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
+          required
         />
+        <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
 
-        <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
+        {/* Next.js Link to navigate to the sign-in page */}
+        <SignUpLink href="/SignIn">already have account  Sign in</SignUpLink>
 
-        {/* Use Next.js Link for navigation to the sign-up page */}
-        <SignUpLink href="/SignUp">Don't have an account? Sign Up</SignUpLink>
-      </SignInForm>
-    </SignInContainer>
+      </SignUpForm>
+    </SignUpContainer>
   );
-}
+};
 
-export default SignIn;
+export default SignUp;
 
-const SignInContainer = styled.div`
+const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,7 +73,7 @@ const SignInContainer = styled.div`
   color: white;
 `;
 
-const SignInForm = styled.div`
+const SignUpForm = styled.div`
   width: 500px;
   padding: 40px;
   border: 2px solid #000;
@@ -77,27 +83,19 @@ const SignInForm = styled.div`
   text-align: center;
 `;
 
-const SignInTitle = styled.h1`
+const SignUpTitle = styled.h1`
   color: white;
   font-size: 36px;
   margin-bottom: 20px;
 `;
 
-const SignInLabel = styled.label`
-  display: block;
-  margin-bottom: 15px;
-  font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  color: white;
-`;
-
-const SignInInput = styled.input`
+const SignUpInput = styled.input`
   width: 100%;
   padding: 15px;
   margin-bottom: 25px;
   border: 1px solid #ffffff;
   border-radius: 10px;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 16px;
   background-color: rgba(255, 255, 255, 0.9);
   color: #2c3e50;
@@ -108,7 +106,7 @@ const SignInInput = styled.input`
   }
 `;
 
-const SignInButton = styled.button`
+const SignUpButton = styled.button`
   width: 100%;
   padding: 15px;
   border: none;
@@ -120,6 +118,23 @@ const SignInButton = styled.button`
 
   &:hover {
     background-color: #ccc;
+  }
+`;
+
+const SignInLink = styled.p`
+  color: white;
+  font-size: 14px;
+  margin-top: 15px;
+
+  a {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #0056b3;
+    }
   }
 `;
 

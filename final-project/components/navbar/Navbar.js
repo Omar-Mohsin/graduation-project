@@ -1,16 +1,17 @@
-'use client'
-import React from 'react';
-import Link from 'next/link';
-import styled from 'styled-components';
-
+"use client";
+import React from "react";
+import Link from "next/link";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { SelectUser } from "@/redux/auth/authSlice";
 function Navbar() {
+  const user = useSelector(SelectUser);
   return (
     <NavbarContainer>
       <Link href="/">
         <Logo>Your Logo</Logo>
       </Link>
       <NavLinks>
-
         <Link href="/Team">
           <NavLink>Teams</NavLink>
         </Link>
@@ -24,9 +25,16 @@ function Navbar() {
         <Link href="/Cart">
           <NavLink>Cart</NavLink>
         </Link>
-        <Link href="/SignIn">
-          <NavLink>Sign In</NavLink>
-        </Link>
+
+        {user ? (
+          <Link href="/Profile">
+            <NavLink>Profile</NavLink>
+          </Link>
+        ) : (
+          <Link href="/SignIn">
+            <NavLink>Sign In</NavLink>
+          </Link>
+        )}
       </NavLinks>
     </NavbarContainer>
   );
@@ -42,7 +50,7 @@ const NavbarContainer = styled.div`
   padding: 30px;
   height: 70px;
   top: 0;
-  width: 100%; 
+  width: 100%;
 `;
 
 const Logo = styled.div`
@@ -69,7 +77,7 @@ const NavLink = styled.a`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     left: 0;
