@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import Link from "next/link";
 import {
   SelectAllCart,
   addToCart,
@@ -131,10 +132,13 @@ function Page() {
           </SummaryContainer>
           <ButttonContainer>
           
-          <form >
+
+            {/* check here if the user is logged in or not
+            if yes then show the checkout button
+            if no direct the user to the login page */}
 
           <CheckoutButton type="submit">Checkout</CheckoutButton>
-          </form>
+         
           
           </ButttonContainer>
         </div>
