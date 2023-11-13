@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Products_URL = 'https://fakestoreapi.com/products';
+const Products_URL = 'http://localhost:8000/items/api/data/';
 
 const initialState = {
   productsList: [],

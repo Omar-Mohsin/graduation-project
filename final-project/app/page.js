@@ -27,7 +27,7 @@ const Page = () => {
         {products.map((product) => (
           <ProductCard key={product.id}>
             <ProductImage>
-              <img src={product.image} alt={product.title} />
+              <img src={product.image_url} alt={product.name} />
             </ProductImage>
 
             {product.stocks === 0 ? (
@@ -38,7 +38,7 @@ const Page = () => {
               <ProductPrice>{product.stocks}</ProductPrice>
             )}
 
-            <ProductTitle>{product.title}</ProductTitle>
+            <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
               {product.stocks ===0? (

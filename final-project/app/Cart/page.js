@@ -6,6 +6,8 @@ import {
   addToCart,
   removeFromCart,
 } from "@/redux/cart/cartSlice";
+import axios from 'axios';
+
 import styled from "styled-components";
 
 function Page() {
@@ -18,6 +20,20 @@ function Page() {
     USD: "$",
     JD: "JD",
   };
+
+
+
+  const handleCheckout = async () => {
+    try {
+        const response = await axios.post('/api/checkout', {
+            cart,
+        });
+
+        console.log(response.data.message);
+    } catch (error) {
+        console.error('Checkout failed:', error.message);
+    }
+};
 
   const displayCurrency = (amount) => {
     const convertedAmount = amount * exchangeRate[selectedCurrency];
@@ -82,10 +98,10 @@ function Page() {
             <Product key={product.id} isLoaded={isLoaded}>
               <ShoppingCart>
                 <ProductImage>
-                  <img src={product.image} alt={product.title} />
+                  <img src={product.image_url} alt={product.name} />
                 </ProductImage>
                 <ProductDetails>
-                  <ProductTitle>{product.title}</ProductTitle>
+                  <ProductTitle>{product.name}</ProductTitle>
                   <ProductDescription>{product.description}</ProductDescription>
                 </ProductDetails>
                 <ProductPrice>{displayCurrency(product.price)}</ProductPrice>
@@ -126,13 +142,9 @@ function Page() {
               <SummaryValue>{displayCurrency(grandTotal)}</SummaryValue>
             </SummaryItem>
           </SummaryContainer>
-          <ButttonContainer>
-            {/* check here if the user is logged in or not
-            if yes then show the checkout button
-            if no direct the user to the login page */}
-
-            <CheckoutButton type="submit">Checkout</CheckoutButton>
-          </ButttonContainer>
+          <CheckoutButton type="submit" onClick={handleCheckout}>
+                Checkout
+            </CheckoutButton>
         </div>
       ) : (
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
@@ -140,7 +152,9 @@ function Page() {
     </CartContainer>
   );
 }
-
+   {/* check here if the user is logged in or not
+            if yes then show the checkout button
+            if no direct the user to the login page */}
 export default Page;
 
 const CartContainer = styled.div`
