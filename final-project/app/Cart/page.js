@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Link from "next/link";
 import {
   SelectAllCart,
   addToCart,
@@ -10,18 +9,15 @@ import {
 import styled from "styled-components";
 
 function Page() {
-
   const exchangeRate = {
-    USD: 1,     
-    JD: 0.709,   
+    USD: 1,
+    JD: 0.709,
   };
 
-  
   const currencySymbol = {
     USD: "$",
     JD: "JD",
   };
-
 
   const displayCurrency = (amount) => {
     const convertedAmount = amount * exchangeRate[selectedCurrency];
@@ -71,7 +67,7 @@ function Page() {
   return (
     <CartContainer>
       {cart.length > 0 ? (
-        <div >
+        <div>
           <SwitchHolder>
             <ToggleCurrencySwitch>
               <ToggleCurrencyInput
@@ -131,15 +127,11 @@ function Page() {
             </SummaryItem>
           </SummaryContainer>
           <ButttonContainer>
-          
-
             {/* check here if the user is logged in or not
             if yes then show the checkout button
             if no direct the user to the login page */}
 
-          <CheckoutButton type="submit">Checkout</CheckoutButton>
-         
-          
+            <CheckoutButton type="submit">Checkout</CheckoutButton>
           </ButttonContainer>
         </div>
       ) : (
@@ -246,7 +238,7 @@ const ShoppingCart = styled.div`
 `;
 
 const ProductImage = styled.div`
-margin-left : 20px;
+  margin-left: 20px;
   flex: 1;
   img {
     max-width: 150px;
@@ -341,10 +333,10 @@ const EmptyCartMessage = styled.div`
 `;
 
 const ButttonContainer = styled.div`
-display : flex;
-justify-content : flex-end;
-margin-bottom : 50px;
-`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+`;
 
 const CheckoutButton = styled.button`
   background-color: #4caf50;
@@ -364,16 +356,14 @@ const CheckoutButton = styled.button`
   }
 `;
 
-
-
 const SummaryContainer = styled.div`
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 20px;
-  margin-top:100px;
-  max-width: 400px; 
-  margin-left : auto;
+  margin-top: 100px;
+  max-width: 400px;
+  margin-left: auto;
   width: 100%;
   display: flex;
   flex-direction: column;

@@ -1,11 +1,11 @@
-'use client'
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchProducts } from '@/redux/products/productsSlice';
-import { SelectAllProducts } from '@/redux/products/productsSlice';
-import { addToCart } from '@/redux/cart/cartSlice';
-import styled from 'styled-components';
-import { Footer } from '@/components';
+"use client";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProducts } from "@/redux/products/productsSlice";
+import { SelectAllProducts } from "@/redux/products/productsSlice";
+import { addToCart } from "@/redux/cart/cartSlice";
+import styled from "styled-components";
+import { Footer } from "@/components";
 
 const Page = () => {
   const products = useSelector(SelectAllProducts);
@@ -13,17 +13,13 @@ const Page = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-
   }, []);
-
 
   console.log(products);
 
   const addButtonHandler = (product) => {
-
-    dispatch(addToCart(product))
-
-  }
+    dispatch(addToCart(product));
+  };
 
   return (
     <Container>
@@ -33,23 +29,43 @@ const Page = () => {
             <ProductImage>
               <img src={product.image} alt={product.title} />
             </ProductImage>
+
+            {product.stocks === 0 ? (
+              <div className="bg-red-500 text-white text-xs font-bold rounded-xl px-2 py-1 absolute top-0 right-0">
+                Out of Stock
+              </div>
+            ) : (
+              <ProductPrice>{product.stocks}</ProductPrice>
+            )}
+
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              <AddToCartButton onClick={() => { addButtonHandler(product) }}>Add to Cart</AddToCartButton>
+              {product.stocks ===0? (
+                <AddToCartButton  onClick={() => {}}>
+                  add to cart
+                </AddToCartButton>
+              ) : (
+                <AddToCartButton
+                  onClick={() => {
+                    addButtonHandler(product);
+                  }}
+                >
+                  Add to Cart
+                </AddToCartButton>
+              )}
+
               <MoreInfoButton>More Info</MoreInfoButton>
             </div>
           </ProductCard>
         ))}
       </div>
       <Footer />
-
     </Container>
   );
 };
 
 export default Page;
-
 
 const Container = styled.div`
   margin: 0 auto;
@@ -57,13 +73,11 @@ const Container = styled.div`
   text-align: center;
 `;
 
-
-
 const ProductCard = styled.div`
   background: #fff;
   padding: 1rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 0.375rem; 
+  border-radius: 0.375rem;
   transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
@@ -74,15 +88,15 @@ const ProductCard = styled.div`
 const ProductImage = styled.div`
   width: 100%;
   height: 0;
-  padding-bottom: 150%; 
+  padding-bottom: 150%;
   overflow: hidden;
   border-radius: 0.375rem;
 
   img {
     object-fit: cover;
-    width: '100%';
-    height: '100%';
-    padding : 50px;
+    width: "100%";
+    height: "100%";
+    padding: 50px;
     transition: opacity 0.3s;
     &:hover {
       opacity: 0.9;
@@ -92,17 +106,16 @@ const ProductImage = styled.div`
 
 const ProductTitle = styled.h2`
   font-size: 1.5rem;
-  font-weight: 600; 
+  font-weight: 600;
   margin-top: 1rem;
-  white-space: nowrap; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const ProductPrice = styled.p`
-  color: #666; 
-  font-size: 1.25rem; 
+  color: #666;
+  font-size: 1.25rem;
   margin-top: 0.5rem;
 `;
 
@@ -126,6 +139,6 @@ const AddToCartButton = styled(Button)`
 `;
 
 const MoreInfoButton = styled(Button)`
-  background-color: #f3f4f6; 
-  color: #333; 
+  background-color: #f3f4f6;
+  color: #333;
 `;

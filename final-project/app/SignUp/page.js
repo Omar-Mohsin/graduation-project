@@ -1,17 +1,17 @@
-'use client'
-import Link from 'next/link';
-import styled from 'styled-components';
-import { useState } from 'react';
+"use client";
+import Link from "next/link";
+import styled from "styled-components";
+import { useState } from "react";
 
 const SignUp = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    console.log('Full Name: ', fullName);
-    console.log('Email: ', email);
-    console.log('Password: ', password);
+    console.log("Full Name: ", fullName);
+    console.log("Email: ", email);
+    console.log("Password: ", password);
   };
 
   const handleFullNameChange = (event) => {
@@ -54,8 +54,7 @@ const SignUp = () => {
         <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
 
         {/* Next.js Link to navigate to the sign-in page */}
-        <SignUpLink href="/SignIn">already have account  Sign in</SignUpLink>
-
+        <SignUpLink href="/SignIn">already have account Sign in</SignUpLink>
       </SignUpForm>
     </SignUpContainer>
   );
@@ -95,7 +94,7 @@ const SignUpInput = styled.input`
   margin-bottom: 25px;
   border: 1px solid #ffffff;
   border-radius: 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 16px;
   background-color: rgba(255, 255, 255, 0.9);
   color: #2c3e50;
