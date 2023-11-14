@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Products_URL = 'http://localhost:8000/items/api/data/';
+const Products_URL = 'https://fakestoreapi.com/products';
 
 const initialState = {
   productsList: [],
@@ -20,7 +20,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 })
 
 const productsSlice = createSlice({
-  
+
   name: "products",
   initialState,
   reducers: {},
@@ -43,6 +43,6 @@ export const { reducer: productsReducer } = productsSlice;
 
 
 export const SelectAllProducts = (state) => {
-return state.products.productsList;
+  return state.products.productsList;
 }
 export default productsSlice.reducer;

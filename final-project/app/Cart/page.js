@@ -25,15 +25,15 @@ function Page() {
 
   const handleCheckout = async () => {
     try {
-        const response = await axios.post('/api/checkout', {
-            cart,
-        });
+      const response = await axios.post('/api/checkout', {
+        cart,
+      });
 
-        console.log(response.data.message);
+      console.log(response.data.message);
     } catch (error) {
-        console.error('Checkout failed:', error.message);
+      console.error('Checkout failed:', error.message);
     }
-};
+  };
 
   const displayCurrency = (amount) => {
     const convertedAmount = amount * exchangeRate[selectedCurrency];
@@ -142,9 +142,11 @@ function Page() {
               <SummaryValue>{displayCurrency(grandTotal)}</SummaryValue>
             </SummaryItem>
           </SummaryContainer>
-          <CheckoutButton type="submit" onClick={handleCheckout}>
-                Checkout
+          <ButttonContainer>
+            <CheckoutButton type="submit" onClick={handleCheckout}>
+              Checkout
             </CheckoutButton>
+          </ButttonContainer>
         </div>
       ) : (
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
@@ -152,7 +154,7 @@ function Page() {
     </CartContainer>
   );
 }
-   {/* check here if the user is logged in or not
+{/* check here if the user is logged in or not
             if yes then show the checkout button
             if no direct the user to the login page */}
 export default Page;

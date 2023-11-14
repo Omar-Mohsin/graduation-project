@@ -41,8 +41,8 @@ const Page = () => {
             <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              {product.stocks ===0? (
-                <AddToCartButton  onClick={() => {}}>
+              {product.stocks === 0 ? (
+                <AddToCartButton onClick={() => { }}>
                   add to cart
                 </AddToCartButton>
               ) : (
