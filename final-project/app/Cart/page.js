@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   SelectAllCart,
@@ -11,6 +11,20 @@ import axios from 'axios';
 import styled from "styled-components";
 
 function Page() {
+
+
+
+  const cart = useSelector(SelectAllCart);
+  const dispatch = useDispatch();
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+
+
+ 
+  const filteredCart = useMemo(() => {
+    const map = new Map(cart.map(pos => [pos.id, pos]));
+    return [...map.values()];
+  }, [cart]);
+  
   const exchangeRate = {
     USD: 1,
     JD: 0.709,
@@ -41,19 +55,6 @@ function Page() {
     return `${symbol}${convertedAmount.toFixed(2)}`;
   };
 
-  const cart = useSelector(SelectAllCart);
-  const dispatch = useDispatch();
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-
-  const filteredCart = cart.filter(
-    (item, index) => cart.indexOf(item) === index
-  );
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 100);
-  }, []);
 
   const toggleCurrency = () => {
     setSelectedCurrency((prevCurrency) =>
@@ -95,10 +96,10 @@ function Page() {
             </ToggleCurrencySwitch>
           </SwitchHolder>
           {filteredCart.map((product) => (
-            <Product key={product.id} isLoaded={isLoaded}>
+            <Product key={product.id}>
               <ShoppingCart>
                 <ProductImage>
-                  <img src={product.image_url} alt={product.name} />
+                  <img src={product.image} alt={product.name} />
                 </ProductImage>
                 <ProductDetails>
                   <ProductTitle>{product.name}</ProductTitle>
@@ -238,7 +239,6 @@ const Product = styled.div`
     transform: scale(1.005);
   }
 
-  transform: translateX(${({ isLoaded }) => (isLoaded ? "0" : "-100%")});
   transition: transform 0.6s ease-in-out;
 
   &.loaded {
