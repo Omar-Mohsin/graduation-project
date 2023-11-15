@@ -2,12 +2,13 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
+import { SelectUser } from "@/redux/auth/authSlice";
 const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const user = useSelector(SelectUser);
   const handleSubmit = () => {
     console.log("Full Name: ", fullName);
     console.log("Email: ", email);
@@ -27,41 +28,61 @@ const SignUp = () => {
   };
 
   return (
-    <SignUpContainer>
-      <SignUpForm>
-        <SignUpTitle>Sign Up</SignUpTitle>
-        <SignUpInput
-          type="text"
-          placeholder="Full Name"
-          value={fullName}
-          onChange={handleFullNameChange}
-          required
-        />
-        <SignUpInput
-          type="email"
-          placeholder="Email Address"
-          value={email}
-          onChange={handleEmailChange}
-          required
-        />
-        <SignUpInput
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={handlePasswordChange}
-          required
-        />
-        <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
+      <>
+      {!user ? (
+        <SignUpContainer>
+        <SignUpForm>
+          <SignUpTitle>Sign Up</SignUpTitle>
+          <SignUpInput
+            type="text"
+            placeholder="Full Name"
+            value={fullName}
+            onChange={handleFullNameChange}
+            required
+          />
+          <SignUpInput
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={handleEmailChange}
+            required
+          />
+          <SignUpInput
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+          />
+          <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
 
-        {/* Next.js Link to navigate to the sign-in page */}
-        <SignUpLink href="/SignIn">already have account Sign in</SignUpLink>
-      </SignUpForm>
-    </SignUpContainer>
+          <SignUpLink href="/SignIn">already have account Sign in</SignUpLink>
+        </SignUpForm>
+          </SignUpContainer>
+      ) : (
+       
+        <Section>
+        <p>
+          You are already signed in{" "}
+          <Link href={"/"} style={{ color: "blue" }}>
+            go to Home Page
+          </Link>
+        </p>
+      </Section>
+      )}
+  </>
   );
 };
 
 export default SignUp;
-
+const Section = styled.h4`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  height: 100vh;
+`;
 const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;

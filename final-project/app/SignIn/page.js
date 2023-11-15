@@ -1,13 +1,12 @@
-'use client'
-import Link from 'next/link';
-import styled from 'styled-components';
-import { useState } from 'react';
-import { useSelector , useDispatch } from 'react-redux';
-import { addUser } from '@/redux/auth/authSlice';
+"use client";
+import Link from "next/link";
+import styled from "styled-components";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { addUser } from "@/redux/auth/authSlice";
+import { SelectUser } from "@/redux/auth/authSlice";
 function SignIn() {
-
-
-  const dispatch = useDispatch();
+  const user = useSelector(SelectUser);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,8 +14,7 @@ function SignIn() {
     console.log("Email: ", email);
     console.log("Password: ", password);
 
-      addUser({email , password});
-
+    addUser({ email, password });
   };
 
   const handleEmailChange = (event) => {
@@ -28,35 +26,56 @@ function SignIn() {
   };
 
   return (
-    <SignInContainer>
-      <SignInForm>
-        <SignInTitle>Sign In</SignInTitle>
+    <>
+      {!user ? (
+        <SignInContainer>
+          <SignInForm>
+            <SignInTitle>Sign In</SignInTitle>
 
-        <SignInLabel>Email</SignInLabel>
-        <SignInInput
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
+            <SignInLabel>Email</SignInLabel>
+            <SignInInput
+              type="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
 
-        <SignInLabel>Password</SignInLabel>
-        <SignInInput
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
+            <SignInLabel>Password</SignInLabel>
+            <SignInInput
+              type="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
 
-        <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
+            <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
 
-        {/* Use Next.js Link for navigation to the sign-up page */}
-        <SignUpLink href="/SignUp">Don't have an account? Sign Up</SignUpLink>
-      </SignInForm>
-    </SignInContainer>
+            <SignUpLink href="/SignUp">
+              Don't have an account? Sign Up
+            </SignUpLink>
+          </SignInForm>
+        </SignInContainer>
+      ) : (
+        <Section>
+          <p>
+            You are already signed in{" "}
+            <Link href={"/"} style={{ color: "blue" }}>
+              go to Home Page
+            </Link>
+          </p>
+        </Section>
+      )}
+    </>
   );
 }
 
 export default SignIn;
-
+const Section = styled.h4`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+  height: 100vh;
+`;
 const SignInContainer = styled.div`
   display: flex;
   flex-direction: column;
