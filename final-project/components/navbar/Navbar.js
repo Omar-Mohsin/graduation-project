@@ -13,7 +13,7 @@ function Navbar() {
       </Link>
       <NavLinks>
         <Link href="/Team">
-          <NavLink>Teams</NavLink>
+          <NavLink>Team</NavLink>
         </Link>
 
         <Link href="/About">
@@ -27,9 +27,9 @@ function Navbar() {
         </Link>
 
         {user ? (
-          <Link href="/Profile">
-            <NavLink>Profile</NavLink>
-          </Link>
+          
+            <NavLink>signout</NavLink>
+     
         ) : (
           <Link href="/SignIn">
             <NavLink>Sign In</NavLink>

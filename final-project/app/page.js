@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
@@ -10,6 +10,9 @@ import { Footer } from "@/components";
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
+
+
+
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -24,9 +27,10 @@ const Page = () => {
   return (
     <Container>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id}>
-            <ProductImage>
+        {products.map((product ) => (
+          <ProductCard key={product.id} >
+         
+              <ProductImage>
               <img src={product.image} alt={product.name} />
             </ProductImage>
 
@@ -42,7 +46,7 @@ const Page = () => {
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
               {product.stocks === 0 ? (
-                <AddToCartButton onClick={() => { }}>
+                <AddToCartButton onClick={() => {}}>
                   add to cart
                 </AddToCartButton>
               ) : (
@@ -54,9 +58,10 @@ const Page = () => {
                   Add to Cart
                 </AddToCartButton>
               )}
-
-              <MoreInfoButton>More Info</MoreInfoButton>
             </div>
+            
+           
+           
           </ProductCard>
         ))}
       </div>
@@ -84,6 +89,10 @@ const ProductCard = styled.div`
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
+
+  transform: ${(props) => (props.isFlipped ? "rotateY(180deg)" : "rotateY(0deg)")};
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 `;
 const ProductImage = styled.div`
   width: 100%;
@@ -113,32 +122,31 @@ const ProductTitle = styled.h2`
   text-overflow: ellipsis;
 `;
 
+
 const ProductPrice = styled.p`
   color: #666;
   font-size: 1.25rem;
   margin-top: 0.5rem;
 `;
 
-const Button = styled.button`
+
+const AddToCartButton = styled.button`
+margin-left: auto;
+margin-right: auto;
+
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 999px;
+  width: 100%;  
+  height: 50px;
+  border-radius: 99px;
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
   font-weight: 600;
+  background-color: #007bff;
+  color: #fff;
 
   &:hover {
     transform: scale(1.1);
   }
-`;
-
-const AddToCartButton = styled(Button)`
-  background-color: #007bff;
-  color: #fff;
-`;
-
-const MoreInfoButton = styled(Button)`
-  background-color: #f3f4f6;
-  color: #333;
 `;

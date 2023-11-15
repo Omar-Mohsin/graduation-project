@@ -1,30 +1,27 @@
 "use client";
 import React, { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { SelectUser } from "@/redux/auth/authSlice";
 import {
   SelectAllCart,
   addToCart,
   removeFromCart,
 } from "@/redux/cart/cartSlice";
-import axios from 'axios';
-
+import axios from "axios";
+import Link from "next/link";
 import styled from "styled-components";
 
-function Page() {
-
-
-
+function page() {
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const user = useSelector(SelectUser);
 
-
- 
   const filteredCart = useMemo(() => {
-    const map = new Map(cart.map(pos => [pos.id, pos]));
+    const map = new Map(cart.map((pos) => [pos.id, pos]));
     return [...map.values()];
   }, [cart]);
-  
+
   const exchangeRate = {
     USD: 1,
     JD: 0.709,
@@ -35,26 +32,11 @@ function Page() {
     JD: "JD",
   };
 
-
-
-  const handleCheckout = async () => {
-    try {
-      const response = await axios.post('/api/checkout', {
-        cart,
-      });
-
-      console.log(response.data.message);
-    } catch (error) {
-      console.error('Checkout failed:', error.message);
-    }
-  };
-
   const displayCurrency = (amount) => {
     const convertedAmount = amount * exchangeRate[selectedCurrency];
     const symbol = currencySymbol[selectedCurrency];
     return `${symbol}${convertedAmount.toFixed(2)}`;
   };
-
 
   const toggleCurrency = () => {
     setSelectedCurrency((prevCurrency) =>
@@ -143,10 +125,17 @@ function Page() {
               <SummaryValue>{displayCurrency(grandTotal)}</SummaryValue>
             </SummaryItem>
           </SummaryContainer>
+
           <ButttonContainer>
-            <CheckoutButton type="submit" onClick={handleCheckout}>
-              Checkout
-            </CheckoutButton>
+            {user ? (
+              <Link href={"/Checkout"}>
+              <CheckoutButton type="submit">Checkout</CheckoutButton>
+            </Link>
+            ) : (
+              <Link href={"/SignIn"}>
+                <CheckoutButton type="submit">Checkout</CheckoutButton>
+              </Link>
+            )}
           </ButttonContainer>
         </div>
       ) : (
@@ -155,11 +144,8 @@ function Page() {
     </CartContainer>
   );
 }
-{/* check here if the user is logged in or not
-            if yes then show the checkout button
-            if no direct the user to the login page */}
-export default Page;
 
+export default page;
 const CartContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
