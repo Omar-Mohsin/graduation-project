@@ -5,18 +5,44 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
 const SignUp = () => {
-  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confrimPassword, setconfrimPassword] = useState("");
+
   const user = useSelector(SelectUser);
+
+
   const handleSubmit = () => {
-    console.log("Full Name: ", fullName);
-    console.log("Email: ", email);
-    console.log("Password: ", password);
+
+    const data = {
+      username,
+      email,
+      password,
+      confrimPassword,
+    };
+  
+    fetch("/api/users/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.success) {
+          console.log("Registration successful!");
+          window.location.href = "/SignIn";
+        } else {
+          // Registration failed
+          console.error("Registration failed:", responseData.error);
+        }
+      });
   };
 
-  const handleFullNameChange = (event) => {
-    setFullName(event.target.value);
+  const handleUserChange = (event) => {
+    setUsername(event.target.value);
   };
 
   const handleEmailChange = (event) => {
@@ -26,6 +52,10 @@ const SignUp = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+  const handleConfrimPasswordChange = (event)=>{
+
+    setconfrimPassword(event.target.value)
+  }
 
   return (
       <>
@@ -36,8 +66,8 @@ const SignUp = () => {
           <SignUpInput
             type="text"
             placeholder="Full Name"
-            value={fullName}
-            onChange={handleFullNameChange}
+            value={username}
+            onChange={handleUserChange}
             required
           />
           <SignUpInput
@@ -52,6 +82,13 @@ const SignUp = () => {
             placeholder="Password"
             value={password}
             onChange={handlePasswordChange}
+            required
+          />
+            <SignUpInput
+            type="password"
+            placeholder="Confrim Password"
+            value={confrimPassword}
+            onChange={handleConfrimPasswordChange}
             required
           />
           <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>

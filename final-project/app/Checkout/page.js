@@ -4,13 +4,16 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
 import Link from "next/link";
+import { SelectAllCart } from "@/redux/cart/cartSlice";
 function Page() {
 
   const user = useSelector(SelectUser);
+  const cart  = useSelector(SelectAllCart);
+
   
   return (
     <PageContainer>
-      {user ? (
+      {true ? (
         <>
           <CheckoutForm >
             <FormGroup>
@@ -76,6 +79,7 @@ function Page() {
               />
             </FormGroup>
             <SubmitButton type="submit">Submit</SubmitButton>
+           
           </CheckoutForm>
         </>
       ) : (

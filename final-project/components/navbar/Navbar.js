@@ -4,12 +4,21 @@ import Link from "next/link";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
+import Image from "next/image";
+import Logo1 from '../../assert/watermelon.png'
 function Navbar() {
   const user = useSelector(SelectUser);
   return (
-    <NavbarContainer>
+    <NavbarContainer> 
       <Link href="/">
-        <Logo>Your Logo</Logo>
+        <Logo>
+          <Image
+            src={Logo1}
+            width={60}
+            height={60}
+            alt="watermelon logo"
+          />
+        </Logo>
       </Link>
       <NavLinks>
         <Link href="/Team">
@@ -27,9 +36,7 @@ function Navbar() {
         </Link>
 
         {user ? (
-          
-            <NavLink>signout</NavLink>
-     
+          <NavLink>signout</NavLink>
         ) : (
           <Link href="/SignIn">
             <NavLink>Sign In</NavLink>
