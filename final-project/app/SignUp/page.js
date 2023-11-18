@@ -4,25 +4,24 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
-const SignUp = () => {
+const page = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confrimPassword, setconfrimPassword] = useState("");
+  const [confirmPassword, setconfrimPassword] = useState("");
 
   const user = useSelector(SelectUser);
-
-
   const handleSubmit = () => {
-
     const data = {
       username,
       email,
       password,
-      confrimPassword,
+      confirmPassword,
     };
-  
-    fetch("/api/users/register", {
+
+    console.log("Form data:", data); // Log the data to verify before sending
+
+    fetch("http://localhost:8000/api/signup/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +32,7 @@ const SignUp = () => {
       .then((responseData) => {
         if (responseData.success) {
           console.log("Registration successful!");
-          window.location.href = "/SignIn";
+          window.location.href = "/";
         } else {
           // Registration failed
           console.error("Registration failed:", responseData.error);
@@ -52,66 +51,64 @@ const SignUp = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
-  const handleConfrimPasswordChange = (event)=>{
-
-    setconfrimPassword(event.target.value)
-  }
+  const handleConfrimPasswordChange = (event) => {
+    setconfrimPassword(event.target.value);
+  };
 
   return (
-      <>
+    <>
       {!user ? (
         <SignUpContainer>
-        <SignUpForm>
-          <SignUpTitle>Sign Up</SignUpTitle>
-          <SignUpInput
-            type="text"
-            placeholder="Full Name"
-            value={username}
-            onChange={handleUserChange}
-            required
-          />
-          <SignUpInput
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-          <SignUpInput
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
+          <SignUpForm>
+            <SignUpTitle>Sign Up</SignUpTitle>
             <SignUpInput
-            type="password"
-            placeholder="Confrim Password"
-            value={confrimPassword}
-            onChange={handleConfrimPasswordChange}
-            required
-          />
-          <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
+              type="text"
+              placeholder="Full Name"
+              value={username}
+              onChange={handleUserChange}
+              required
+            />
+            <SignUpInput
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+            <SignUpInput
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            <SignUpInput
+              type="password"
+              placeholder="Confrim Password"
+              value={confirmPassword}
+              onChange={handleConfrimPasswordChange}
+              required
+            />
+            <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
 
-          <SignUpLink href="/SignIn">already have account Sign in</SignUpLink>
-        </SignUpForm>
-          </SignUpContainer>
+            <SignUpLink href="/SignIn">already have account Sign in</SignUpLink>
+          </SignUpForm>
+        </SignUpContainer>
       ) : (
-       
         <Section>
-        <p>
-          You are already signed in{" "}
-          <Link href={"/"} style={{ color: "blue" }}>
-            go to Home Page
-          </Link>
-        </p>
-      </Section>
+          <p>
+            You are already signed in{" "}
+            <Link href={"/"} style={{ color: "blue" }}>
+              go to Home Page
+            </Link>
+          </p>
+        </Section>
       )}
-  </>
+    </>
   );
 };
 
-export default SignUp;
+export default page;
 const Section = styled.h4`
   display: flex;
   justify-content: center;

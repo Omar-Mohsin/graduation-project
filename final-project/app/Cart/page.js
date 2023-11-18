@@ -127,7 +127,7 @@ function page() {
           </SummaryContainer>
 
           <ButttonContainer>
-            {true ? (
+            {user ? (
               <Link href={"/Checkout"}>
               <CheckoutButton type="submit">Checkout</CheckoutButton>
             </Link>

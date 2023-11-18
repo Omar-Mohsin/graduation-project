@@ -13,7 +13,7 @@ function Page() {
   
   return (
     <PageContainer>
-      {true ? (
+      {user ? (
         <>
           <CheckoutForm >
             <FormGroup>

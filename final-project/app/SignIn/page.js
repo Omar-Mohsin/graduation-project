@@ -7,18 +7,39 @@ import { addUser } from "@/redux/auth/authSlice";
 import { SelectUser } from "@/redux/auth/authSlice";
 function SignIn() {
   const user = useSelector(SelectUser);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = () => {
-    console.log("Email: ", email);
-    console.log("Password: ", password);
+    const data = {
+      username,
+      password,
+    };
 
-    addUser({ email, password });
+    console.log("Form data:", data); // Log the data to verify before sending
+
+    fetch("http://localhost:8000/api/signup/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.success) {
+          console.log("Registration successful!");
+          addUser({ username, password });
+          window.location.href = "/";
+        } else {
+          // Registration failed
+          console.error("Registration failed:", responseData.error);
+        }
+      });
   };
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setUsername(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -34,8 +55,8 @@ function SignIn() {
 
             <SignInLabel>Email</SignInLabel>
             <SignInInput
-              type="email"
-              value={email}
+              type="text"
+              value={username}
               onChange={handleEmailChange}
             />
 
