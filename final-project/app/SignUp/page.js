@@ -92,7 +92,7 @@ const page = () => {
             />
             <SignUpButton onClick={handleSubmit}>Sign Up</SignUpButton>
 
-            <SignUpLink href="/LogIn">already have account Sign in</SignUpLink>
+            <SignUpLink href="/LogIn">already have account Log in</SignUpLink>
           </SignUpForm>
         </SignUpContainer>
       ) : (

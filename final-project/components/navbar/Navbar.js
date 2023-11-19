@@ -74,6 +74,13 @@ const Logo = styled.div`
   color: white;
   font-size: 24px;
   font-weight: bold;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    color: #fff;
+    transform: translateY(-5px);
+  }
 `;
 
 const NavLinks = styled.div`
