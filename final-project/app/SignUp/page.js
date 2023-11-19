@@ -2,8 +2,8 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { SelectUser } from "@/redux/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { SelectUser, addUser } from "@/redux/auth/authSlice";
 const page = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ const page = () => {
   const [confirmPassword, setconfrimPassword] = useState("");
 
   const user = useSelector(SelectUser);
+  const dispatch = useDispatch();
   const handleSubmit = () => {
     const data = {
       username,
@@ -19,7 +20,7 @@ const page = () => {
       confirmPassword,
     };
 
-    console.log("Form data:", data); // Log the data to verify before sending
+    console.log("Form data:", data);
 
     fetch("http://localhost:8000/api/signup/", {
       method: "POST",
@@ -33,8 +34,8 @@ const page = () => {
         if (responseData.success) {
           console.log("Registration successful!");
           window.location.href = "/";
+          dispatch(addUser({ username, email, password }));
         } else {
-          // Registration failed
           console.error("Registration failed:", responseData.error);
         }
       });

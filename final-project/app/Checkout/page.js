@@ -8,12 +8,72 @@ import { SelectAllCart } from "@/redux/cart/cartSlice";
 function Page() {
 
   const user = useSelector(SelectUser);
-  const cart  = useSelector(SelectAllCart);
+  const cart = useSelector(SelectAllCart);
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    streetName: '',
+    city: '',
+    postalCode: '',
+    buildingNumber: '',
+    phoneNumber: '',
+    additionalDeliveryInfo: '',
+  });
+  // const cartSummary = cart.reduce((summary, item) => { remove the comment when you wanna use it
+  //   const { title } = item;
 
-  
+  //   if (!summary[title]) {
+  //     summary[title] = {
+  //       name: title,
+  //       quantity: 1, 
+  //     };
+  //   } else {
+  //     summary[title].quantity += 1;
+  //   }
+
+  //   return summary;
+  // }, {});
+
+  // console.log(cartSummary);
+
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    const data = {
+
+      cart, // summarycart , but when the shape of th cart is ready 
+      formData,
+    }
+    console.log("Form data:", data);
+
+    fetch("", { // put your url
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.success) {
+          console.log("successful!");
+          window.location.href = "/";
+        } else {
+          console.error(" failed:", responseData.error);
+        }
+      }
+      )
+  };
   return (
     <PageContainer>
-      {user ? (
+      {true ? (
         <>
           <CheckoutForm >
             <FormGroup>
@@ -21,6 +81,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="firstName"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -29,6 +90,8 @@ function Page() {
               <FormInput
                 type="text"
                 name="lastName"
+                onChange={handleChange}
+
                 required
               />
             </FormGroup>
@@ -37,6 +100,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="streetName"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -45,6 +109,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="city"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -53,6 +118,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="postalCode"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -61,6 +127,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="buildingNumber"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -69,6 +136,7 @@ function Page() {
               <FormInput
                 type="text"
                 name="phoneNumber"
+                onChange={handleChange}
                 required
               />
             </FormGroup>
@@ -78,15 +146,15 @@ function Page() {
                 name="additionalDeliveryInfo"
               />
             </FormGroup>
-            <SubmitButton type="submit">Submit</SubmitButton>
-           
+            <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+
           </CheckoutForm>
         </>
       ) : (
         <>
-          <p>You are not athorize to this page <Link href={'/SignIn'} style={{color : 'blue', cursor : 'pointer'}}>  please sign in</Link></p>
-            
-          
+          <p>You are not athorize to this page <Link href={'/SignIn'} style={{ color: 'blue', cursor: 'pointer' }}>  please sign in</Link></p>
+
+
         </>
       )}
     </PageContainer>

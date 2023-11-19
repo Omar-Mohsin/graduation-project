@@ -132,7 +132,7 @@ function page() {
               <CheckoutButton type="submit">Checkout</CheckoutButton>
             </Link>
             ) : (
-              <Link href={"/SignIn"}>
+              <Link href={"/Login"}>
                 <CheckoutButton type="submit">Checkout</CheckoutButton>
               </Link>
             )}

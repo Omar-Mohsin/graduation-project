@@ -43,6 +43,7 @@ function Footer() {
 export default Footer;
 
 const FooterContainer = styled.footer`
+margin-top: 50px;
   background-color: #1a1a1a;
   color: #fff;
   padding: 30px 0;

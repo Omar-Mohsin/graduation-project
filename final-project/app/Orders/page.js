@@ -4,8 +4,10 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
 import Link from "next/link";
+import { useState , useEffect } from "react";
 function page() {
   const user = useSelector(SelectUser);
+  console.log(user)
   return(
     
     <PageContainer>

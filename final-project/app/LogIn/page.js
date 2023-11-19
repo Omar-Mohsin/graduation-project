@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { addUser } from "@/redux/auth/authSlice";
 import { SelectUser } from "@/redux/auth/authSlice";
-function SignIn() {
+function page() {
   const user = useSelector(SelectUser);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,9 +16,9 @@ function SignIn() {
       password,
     };
 
-    console.log("Form data:", data); // Log the data to verify before sending
+    console.log("Form data:", data); 
 
-    fetch("http://localhost:8000/api/signup/", {
+    fetch("http://localhost:8000/api/signup/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ function SignIn() {
       });
   };
 
-  const handleEmailChange = (event) => {
+  const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
 
@@ -49,31 +49,31 @@ function SignIn() {
   return (
     <>
       {!user ? (
-        <SignInContainer>
-          <SignInForm>
-            <SignInTitle>Sign In</SignInTitle>
+        <LoginContainer>
+          <LoginForm>
+            <LoginTitle>Sign In</LoginTitle>
 
-            <SignInLabel>Email</SignInLabel>
-            <SignInInput
+            <LoginLabel>Username</LoginLabel>
+            <LoginInput
               type="text"
               value={username}
-              onChange={handleEmailChange}
+              onChange={handleUsernameChange}
             />
 
-            <SignInLabel>Password</SignInLabel>
-            <SignInInput
+            <LoginLabel>Password</LoginLabel>
+            <LoginInput
               type="password"
               value={password}
               onChange={handlePasswordChange}
             />
 
-            <SignInButton onClick={handleSubmit}>Sign In</SignInButton>
+            <LoginButton onClick={handleSubmit}>Sign In</LoginButton>
 
             <SignUpLink href="/SignUp">
               Don't have an account? Sign Up
             </SignUpLink>
-          </SignInForm>
-        </SignInContainer>
+          </LoginForm>
+        </LoginContainer>
       ) : (
         <Section>
           <p>
@@ -88,7 +88,7 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default page;
 const Section = styled.h4`
   display: flex;
   justify-content: center;
@@ -97,7 +97,7 @@ const Section = styled.h4`
   background-color: #f4f4f4;
   height: 100vh;
 `;
-const SignInContainer = styled.div`
+const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -107,7 +107,7 @@ const SignInContainer = styled.div`
   color: white;
 `;
 
-const SignInForm = styled.div`
+const LoginForm = styled.div`
   width: 500px;
   padding: 40px;
   border: 2px solid #000;
@@ -117,13 +117,13 @@ const SignInForm = styled.div`
   text-align: center;
 `;
 
-const SignInTitle = styled.h1`
+const LoginTitle = styled.h1`
   color: white;
   font-size: 36px;
   margin-bottom: 20px;
 `;
 
-const SignInLabel = styled.label`
+const LoginLabel = styled.label`
   display: block;
   margin-bottom: 15px;
   font-family: "Poppins", sans-serif;
@@ -131,7 +131,7 @@ const SignInLabel = styled.label`
   color: white;
 `;
 
-const SignInInput = styled.input`
+const LoginInput = styled.input`
   width: 100%;
   padding: 15px;
   margin-bottom: 25px;
@@ -148,7 +148,7 @@ const SignInInput = styled.input`
   }
 `;
 
-const SignInButton = styled.button`
+const LoginButton = styled.button`
   width: 100%;
   padding: 15px;
   border: none;

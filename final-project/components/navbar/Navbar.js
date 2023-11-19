@@ -2,12 +2,17 @@
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { SelectUser } from "@/redux/auth/authSlice";
+import { useSelector , useDispatch } from "react-redux";
+import { SelectUser , removeUser } from "@/redux/auth/authSlice";
 import Image from "next/image";
 import Logo1 from '../../assert/watermelon.png'
 function Navbar() {
   const user = useSelector(SelectUser);
+  const dispatch = useDispatch();
+
+  const handleLogOut = () => { 
+    dispatch(removeUser());
+  }
   return (
     <NavbarContainer> 
       <Link href="/">
@@ -28,6 +33,9 @@ function Navbar() {
         <Link href="/About">
           <NavLink>About</NavLink>
         </Link>
+        <Link href="/Statistics">
+          <NavLink>Statistics</NavLink>
+        </Link>
         <Link href="/Orders">
           <NavLink>Orders</NavLink>
         </Link>
@@ -36,10 +44,12 @@ function Navbar() {
         </Link>
 
         {user ? (
-          <NavLink>signout</NavLink>
+           <Link href="/LogIn">
+           <NavLink> <button onClick={handleLogOut}>Log Out </button></NavLink>
+         </Link>
         ) : (
-          <Link href="/SignIn">
-            <NavLink>Sign In</NavLink>
+          <Link href="/LogIn">
+            <NavLink>Log In</NavLink>
           </Link>
         )}
       </NavLinks>
