@@ -51,7 +51,7 @@ function page() {
       {!user ? (
         <LoginContainer>
           <LoginForm>
-            <LoginTitle>Sign In</LoginTitle>
+            <LoginTitle>Log In</LoginTitle>
 
             <LoginLabel>Username</LoginLabel>
             <LoginInput
