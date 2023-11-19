@@ -20,7 +20,7 @@ function Page() {
     additionalDeliveryInfo: '',
   });
   // const cartSummary = cart.reduce((summary, item) => { remove the comment when you wanna use it
-  //   const { title } = item;
+  //   const { title } = item; // change it to name  -- > depend on the property of the product 
 
   //   if (!summary[title]) {
   //     summary[title] = {
@@ -73,7 +73,7 @@ function Page() {
   };
   return (
     <PageContainer>
-      {true ? (
+      {user ? (
         <>
           <CheckoutForm >
             <FormGroup>
