@@ -38,7 +38,7 @@ const Page = () => {
               </StockStatus>
               </ContainerStocksStatus>
             ) : (
-              <ProductPrice>Number Of Stocks  : {product.stocks}</ProductPrice>
+              <NumberOfStocks>{product.stocks} stocks</NumberOfStocks>
             )}
 
             <ProductTitle>{product.title}</ProductTitle>
@@ -118,7 +118,11 @@ const ProductTitle = styled.h2`
   text-overflow: ellipsis;
 `;
 
-
+const NumberOfStocks = styled.h1`
+font-size: 1.2rem;
+  color: green;
+  margin-top: 0.5rem;
+`
 const ProductPrice = styled.p`
   color: #666;
   font-size: 1.25rem;
