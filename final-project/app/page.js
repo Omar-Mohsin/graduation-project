@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
@@ -10,9 +10,6 @@ import { Footer } from "@/components";
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
-
-
-
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -27,28 +24,30 @@ const Page = () => {
   return (
     <Container>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product ) => (
+        {products.map((product) => (
           <ProductCard key={product.id} >
-         
-              <ProductImage>
+
+            <ProductImage>
               <img src={product.image} alt={product.name} />
             </ProductImage>
 
-            {product.stocks === 0 ? (
-              <div className="bg-red-500 text-white text-xs font-bold rounded-xl px-2 py-1 absolute top-0 right-0">
+            {product.stocks === 0 ? ( 
+              <ContainerStocksStatus>
+              <StockStatus>
                 Out of Stock
-              </div>
+              </StockStatus>
+              </ContainerStocksStatus>
             ) : (
-              <ProductPrice>{product.stocks}</ProductPrice>
+              <ProductPrice>Number Of Stocks  : {product.stocks}</ProductPrice>
             )}
 
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              {product.stocks === 0 ? (
-                <AddToCartButton onClick={() => {}}>
-                  add to cart
-                </AddToCartButton>
+              {product.stocks === 0  ? (
+                <NoStocksButton>
+                  Add to Cart
+                </NoStocksButton>
               ) : (
                 <AddToCartButton
                   onClick={() => {
@@ -59,9 +58,6 @@ const Page = () => {
                 </AddToCartButton>
               )}
             </div>
-            
-           
-           
           </ProductCard>
         ))}
       </div>
@@ -129,11 +125,39 @@ const ProductPrice = styled.p`
   margin-top: 0.5rem;
 `;
 
+const ContainerStocksStatus = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom : 30px;
+`
+const StockStatus = styled.div`
+  
+  background-color: red;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  width: 200px;
+  font-weight: bold;
+`;
 
+const NoStocksButton = styled.button`
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  width: 100%;  
+  height: 50px;
+  border-radius: 99px;
+  font-weight: 600;
+  cursor:not-allowed;
+  background-color: gray;
+  color: #fff;
+`
 const AddToCartButton = styled.button`
-margin-left: auto;
-margin-right: auto;
-
+  margin-left: auto;
+  margin-right: auto;
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
