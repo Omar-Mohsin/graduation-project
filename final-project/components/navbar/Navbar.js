@@ -11,7 +11,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   const handleLogOut = () => { 
-    dispatch(removeUser());
+    dispatch(removeUser( null));
   }
   return (
     <NavbarContainer> 
@@ -44,9 +44,9 @@ function Navbar() {
         </Link>
 
         {user ? (
-           <Link href="/LogIn">
+         
            <NavLink> <button onClick={handleLogOut}>Log Out </button></NavLink>
-         </Link>
+          
         ) : (
           <Link href="/LogIn">
             <NavLink>Log In</NavLink>

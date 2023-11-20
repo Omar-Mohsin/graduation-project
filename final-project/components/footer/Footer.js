@@ -4,57 +4,54 @@ import styled from 'styled-components';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import Link from 'next/link';
 
 function Footer() {
   return (
     <FooterContainer>
-      <FooterContent>
-        <FooterSection>
-          <h3>About Us</h3>
-          <ul>
-            <li><a href="#">Our Story</a></li>
-            <li><a href="#">Team</a></li>
-            <li><a href="#">Careers</a></li>
-          </ul>
-        </FooterSection>
+    <FooterContent>
+      <FooterSection>
+        <h3>About Us</h3>
+        <ul>
+          <li><Link href={'/About'}>Our Story</Link></li>
+          <li><Link href={'/Team'}>Team</Link></li>
+        </ul>
+      </FooterSection>
 
-        <FooterSection>
-          <h3>Customer Service</h3>
-          <ul>
-            <li><a href="#">Contact Us</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Shipping Information</a></li>
-          </ul>
-        </FooterSection>
+      <FooterSection>
+        <h3>Customer Service</h3>
+        <ul>
+          <li><Link href={'/'}>Contact Us</Link></li>
+          <li><Link href={'/'}>Shipping Information</Link></li>
+        </ul>
+      </FooterSection>
 
-        <FooterSection>
-          <h3>Connect With Us</h3>
-          <SocialIcons>
-            <a href="#" target="_blank"><FacebookIcon /></a>
-            <a href="#" target="_blank"><TwitterIcon /></a>
-            <a href="#" target="_blank"><InstagramIcon /></a>
-          </SocialIcons>
-        </FooterSection>
-      </FooterContent>
-    </FooterContainer>
+      <FooterSection>
+        <h3>Connect With Us</h3>
+        <SocialIcons>
+          <StyledIcon><FacebookIcon /></StyledIcon>
+          <StyledIcon><TwitterIcon /></StyledIcon>
+          <StyledIcon><InstagramIcon /></StyledIcon>
+        </SocialIcons>
+      </FooterSection>
+    </FooterContent>
+  </FooterContainer>
   );
 }
 
 export default Footer;
 
 const FooterContainer = styled.footer`
-margin-top: 50px;
+  margin-top: 30px;
   background-color: #1a1a1a;
   color: #fff;
-  padding: 30px 0;
-  bottom: 0;
-  width: 100%;
+  padding: 50px 0;
 `;
 
 const FooterContent = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-around;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -67,6 +64,8 @@ const FooterSection = styled.div`
   h3 {
     font-size: 24px;
     margin-bottom: 15px;
+    border-bottom: 2px solid #fff; /* Add a border below the heading */
+    padding-bottom: 10px;
   }
 
   ul {
@@ -93,19 +92,30 @@ const SocialIcons = styled.div`
   display: flex;
   align-items: center;
   margin-top: 20px;
+  justify-content: center;
 
   a {
     font-size: 24px;
     color: #ccc;
     margin-right: 10px;
     text-decoration: none;
-    transition: color 0.3s;
-    transform: translateY(0);
-    transition: transform 0.3s ease-in-out;
+    transition: color 0.3s, transform 0.3s ease-in-out;
 
     &:hover {
       color: #fff;
       transform: translateY(-5px);
     }
+  }
+`;
+
+const StyledIcon = styled.div`
+  /* Style for the social media icons (Facebook, Twitter, Instagram) */
+  color: #ccc;
+  font-size: 32px;
+  margin-right: 15px;
+
+  &:hover {
+    color: #fff;
+    transform: scale(1.2);
   }
 `;

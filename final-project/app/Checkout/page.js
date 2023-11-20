@@ -1,59 +1,70 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { SelectUser } from "@/redux/auth/authSlice";
+import { SelectUser , SelectUserId } from "@/redux/auth/authSlice";
 import Link from "next/link";
 import { SelectAllCart } from "@/redux/cart/cartSlice";
 function Page() {
-
   const user = useSelector(SelectUser);
+  const id = useSelector(SelectUserId);
   const cart = useSelector(SelectAllCart);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    streetName: '',
-    city: '',
-    postalCode: '',
-    buildingNumber: '',
-    phoneNumber: '',
-    additionalDeliveryInfo: '',
+  const [cartSummary, setCartSummary] = useState({});
+
+  const [delivery_info, setDelivery_info] = useState({
+    firstName: "",
+    lastName: "",
+    streetName: "",
+    city: "",
+    postalCode: "",
+    buildingNumber: "",
+    phoneNumber: "",
+    additionalDeliveryInfo: "",
   });
-  // const cartSummary = cart.reduce((summary, item) => { remove the comment when you wanna use it
-  //   const { title } = item; // change it to name  -- > depend on the property of the product 
+  useEffect(() => {
+    const calculateCartSummary = () => {
+      const summary = cart.reduce((acc, item) => {
+        const { name, price } = item;
 
-  //   if (!summary[title]) {
-  //     summary[title] = {
-  //       name: title,
-  //       quantity: 1, 
-  //     };
-  //   } else {
-  //     summary[title].quantity += 1;
-  //   }
+        if (!acc[name]) {
+          acc[name] = {
+            name: name,
+            quantity: 1,
+            price: price,
+          };
+        } else {
+          acc[name].quantity += 1;
+        }
 
-  //   return summary;
-  // }, {});
+        acc.totalPrice = (acc.totalPrice || 0) + price;
 
-  // console.log(cartSummary);
+        return acc;
+      }, {});
 
+      setCartSummary(summary);
+    };
+
+    calculateCartSummary();
+  }, [cart]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
+    setDelivery_info((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleSubmit = () => {
-    const data = {
-
-      cart, // summarycart , but when the shape of th cart is ready 
-      formData,
-    }
+  const handleSubmit = async() => {
+   const data = {
+      id :id,
+      cartSummary,
+      delivery_info,
+    };
     console.log("Form data:", data);
 
-    fetch("", { // put your url
+    fetch("", {
+      // put your url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,14 +79,13 @@ function Page() {
         } else {
           console.error(" failed:", responseData.error);
         }
-      }
-      )
+      });
   };
   return (
     <PageContainer>
       {user ? (
         <>
-          <CheckoutForm >
+          <CheckoutForm>
             <FormGroup>
               <FormLabel>First Name:</FormLabel>
               <FormInput
@@ -91,7 +101,6 @@ function Page() {
                 type="text"
                 name="lastName"
                 onChange={handleChange}
-
                 required
               />
             </FormGroup>
@@ -142,19 +151,20 @@ function Page() {
             </FormGroup>
             <FormGroup>
               <FormLabel>Additional Delivery Information:</FormLabel>
-              <FormTextarea
-                name="additionalDeliveryInfo"
-              />
+              <FormTextarea name="additionalDeliveryInfo" />
             </FormGroup>
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-
           </CheckoutForm>
         </>
       ) : (
         <>
-          <p>You are not athorize to this page <Link href={'/SignIn'} style={{ color: 'blue', cursor: 'pointer' }}>  please sign in</Link></p>
-
-
+          <p>
+            You are not athorize to this page{" "}
+            <Link href={"/SignIn"} style={{ color: "blue", cursor: "pointer" }}>
+              {" "}
+              please sign in
+            </Link>
+          </p>
         </>
       )}
     </PageContainer>
@@ -168,11 +178,11 @@ const PageContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4; 
-  height :   100vh;  
+  background-color: #f4f4f4;
+  height: 100vh;
 `;
 
-const CheckoutForm = styled.form`
+const CheckoutForm = styled.div`
   width: 50%;
   padding: 20px;
   border: 1px solid #ddd; /* Lighten the border color */
@@ -196,7 +206,7 @@ const FormInput = styled.input`
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #000; 
+  border: 1px solid #000;
   border-radius: 4px;
 `;
 

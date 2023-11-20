@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
 import { addToCart } from "@/redux/cart/cartSlice";
+import { SelectUser } from "@/redux/auth/authSlice";
 import styled from "styled-components";
 import { Footer } from "@/components";
 
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
-
+  const user = useSelector(SelectUser); 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
@@ -20,7 +21,7 @@ const Page = () => {
   const addButtonHandler = (product) => {
     dispatch(addToCart(product));
   };
-
+  console.log(user);
   return (
     <Container>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

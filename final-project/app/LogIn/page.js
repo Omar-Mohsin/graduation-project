@@ -2,11 +2,13 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector  , useDispatch} from "react-redux";
 import { addUser } from "@/redux/auth/authSlice";
 import { SelectUser } from "@/redux/auth/authSlice";
+import { nanoid } from "@reduxjs/toolkit";
 function page() {
   const user = useSelector(SelectUser);
+  const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -29,7 +31,7 @@ function page() {
       .then((responseData) => {
         if (responseData.success) {
           console.log("Registration successful!");
-          addUser({ username, password });
+          dispatch(addUser({ username, id: nanoid() }));
           window.location.href = "/";
         } else {
           // Registration failed
