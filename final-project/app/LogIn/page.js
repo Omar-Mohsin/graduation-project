@@ -30,8 +30,10 @@ function page() {
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.success) {
+          console.log(  "json data " , response.json())
+          console.log( "response data ", responseData);
           console.log("Registration successful!");
-          dispatch(addUser({ username, id: nanoid() }));
+          dispatch(addUser());
           window.location.href = "/";
         } else {
           // Registration failed
