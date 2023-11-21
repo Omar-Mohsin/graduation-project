@@ -14,15 +14,10 @@ function Navbar() {
     dispatch(removeUser());
   }
   return (
-    <NavbarContainer> 
+    <NavbarContainer>
       <Link href="/">
         <Logo>
-          <Image
-            src={Logo1}
-            width={60}
-            height={60}
-            alt="watermelon logo"
-          />
+          <Image src={Logo1} width={60} height={60} alt="watermelon logo" />
         </Logo>
       </Link>
       <NavLinks>
@@ -36,17 +31,24 @@ function Navbar() {
         <Link href="/Statistics">
           <NavLink>Statistics</NavLink>
         </Link>
-        <Link href="/Orders">
-          <NavLink>Orders</NavLink>
-        </Link>
+
+        {user ? (
+          <Link href="/Orders">
+            <NavLink>Orders</NavLink>
+          </Link>
+        ) : (
+          <></>
+        )}
+
         <Link href="/Cart">
           <NavLink>Cart</NavLink>
         </Link>
 
         {user ? (
-         
-           <NavLink> <button onClick={handleLogOut}>Log Out </button></NavLink>
-          
+          <NavLink>
+            {" "}
+            <button onClick={handleLogOut}>Log Out </button>
+          </NavLink>
         ) : (
           <Link href="/LogIn">
             <NavLink>Log In</NavLink>
