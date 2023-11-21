@@ -10,17 +10,17 @@ const TeamPage = () => {
       name: 'Omar Mohsin',
       position: 'Software Developer Engineer at MBC-Shahid',
       image: 'https://picsum.photos/200/300',
-      linkedin: 'YOUR_LINKEDIN_PROFILE',
-      github: 'YOUR_GITHUB_PROFILE',
-      facebook: 'YOUR_FACEBOOK_PROFILE',
+      linkedin: '',
+      github: '',
+      facebook: '',
     },
     {
       name: 'Mohammad Alrubbi',
       position: 'Software Engineer at Nuummite ',
       image: 'https://picsum.photos/200/301',
-      linkedin: 'YOUR_LINKEDIN_PROFILE',
-      github: 'YOUR_GITHUB_PROFILE',
-      facebook: 'YOUR_FACEBOOK_PROFILE',
+      linkedin: '',
+      github: '',
+      facebook: '',
     },
   ];
 
