@@ -11,7 +11,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   const handleLogOut = () => { 
-    dispatch(removeUser( null));
+    dispatch(removeUser());
   }
   return (
     <NavbarContainer> 

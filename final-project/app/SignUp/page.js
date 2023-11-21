@@ -3,7 +3,7 @@ import Link from "next/link";
 import styled from "styled-components";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SelectUser, addUser  } from "@/redux/auth/authSlice";
+import { SelectUser, addUser } from "@/redux/auth/authSlice";
 const page = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +33,7 @@ const page = () => {
       .then((responseData) => {
         if (responseData.success) {
           console.log("Registration successful!");
+          dispatch(addUser(responseData));
           window.location.href = "/";
           dispatch(addUser({ username, email, password }));
         } else {

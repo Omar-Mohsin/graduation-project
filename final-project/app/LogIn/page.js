@@ -20,7 +20,7 @@ function page() {
 
     console.log("Form data:", data); 
 
-    fetch("http://localhost:8000/api/signup/", { // change the url
+    fetch("http://localhost:8000/api/login/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,10 +30,9 @@ function page() {
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.success) {
-          console.log(  "json data " , response.json())
           console.log( "response data ", responseData);
           console.log("Registration successful!");
-          dispatch(addUser());
+          dispatch(addUser(responseData));
           window.location.href = "/";
         } else {
           // Registration failed

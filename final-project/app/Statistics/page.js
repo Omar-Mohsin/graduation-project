@@ -7,18 +7,26 @@ import { SelectAllProducts } from "@/redux/products/productsSlice";
 import { useSelector } from "react-redux";
 
 function Page() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const products = useSelector(SelectAllProducts);
   const firstFiveProducts = products.slice(0, 3);
 
-  //  useEffect(async () => {
-  //    try {
-  //      const response = await axios.get(''); // put your url
-  //      setData(response.data);
-  //    } catch (error) {
-  //      console.error('Error fetching data:', error);
-  //    }
-  //  }, [data]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(''); // Put your URL here
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [data]); // Empty dependency array to run the effect only once on mount
 
   return (
     <>
@@ -83,7 +91,7 @@ backface-visibility: hidden;
 `;
 
 const ImageContainer = styled.div`
-width: 50%;
+width: 500px;
 height: 50%;
 padding-bottom: 150px;
 overflow: hidden;
