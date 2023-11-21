@@ -26,7 +26,7 @@ function Page() {
     };
 
     fetchData();
-  }, [data]); // Empty dependency array to run the effect only once on mount
+  }, [data]); 
 
   return (
     <>
@@ -34,7 +34,7 @@ function Page() {
 
     <Container>
       {firstFiveProducts.map((product) => (
-        <ProductCard>
+        <ProductCard key={product.id}>
           <ImageContainer>
             <img src={product.image}></img>
           </ImageContainer>
@@ -130,3 +130,7 @@ const QuantitySold = styled.div`
 
 color : green;
 `;
+
+
+
+

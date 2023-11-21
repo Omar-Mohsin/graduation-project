@@ -5,20 +5,18 @@ import { useState } from "react";
 import { useSelector  , useDispatch} from "react-redux";
 import { addUser } from "@/redux/auth/authSlice";
 import { SelectUser } from "@/redux/auth/authSlice";
-import { nanoid } from "@reduxjs/toolkit";
 function page() {
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     const data = {
       username,
       password,
     };
 
-    console.log("Form data:", data); 
 
     fetch("http://localhost:8000/api/login/", { // change the url
       method: "POST",
@@ -30,7 +28,6 @@ function page() {
       .then((response) => response.json())
       .then((responseData) => {
         if (responseData.success) {
-          console.log( "response data ", responseData);
           console.log("Registration successful!");
           dispatch(addUser(responseData));
           window.location.href = "/";

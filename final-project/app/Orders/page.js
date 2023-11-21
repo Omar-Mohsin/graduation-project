@@ -7,7 +7,6 @@ import Link from "next/link";
 import { useState , useEffect } from "react";
 function page() {
   const user = useSelector(SelectUser);
-  console.log(user)
   return(
     
     <PageContainer>

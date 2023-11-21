@@ -88,7 +88,7 @@ const NavLinks = styled.div`
   gap: 20px;
 `;
 
-const NavLink = styled.a`
+const NavLink = styled.p`
   color: white;
   text-decoration: none;
   position: relative;

@@ -18,7 +18,6 @@ const Page = () => {
     dispatch(fetchProducts());
   }, []);
 
-  console.log(products);
 
   const addButtonHandler = (product) => {
     dispatch(addToCart(product));
@@ -27,7 +26,6 @@ const Page = () => {
       setShowSuccessMessage(false);
     }, 2000);
   };
-  console.log(user);
   return (
     <Container>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
