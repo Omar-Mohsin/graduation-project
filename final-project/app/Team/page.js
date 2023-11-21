@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { Avatar, Typography } from '@mui/material';
 import { LinkedIn, GitHub, Facebook } from '@mui/icons-material';
 
 const TeamPage = () => {

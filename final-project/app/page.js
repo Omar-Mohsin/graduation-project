@@ -24,7 +24,7 @@ const Page = () => {
     setShowSuccessMessage(true);
     setTimeout(() => {
       setShowSuccessMessage(false);
-    }, 2000);
+    }, 1000);
   };
   return (
     <Container>
