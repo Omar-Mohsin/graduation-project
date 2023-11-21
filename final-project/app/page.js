@@ -12,6 +12,8 @@ const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const user = useSelector(SelectUser); 
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
@@ -20,23 +22,24 @@ const Page = () => {
 
   const addButtonHandler = (product) => {
     dispatch(addToCart(product));
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+    }, 2000);
   };
   console.log(user);
   return (
     <Container>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <ProductCard key={product.id} >
-
+          <ProductCard key={product.id}>
             <ProductImage>
               <img src={product.image} alt={product.name} />
             </ProductImage>
 
-            {product.stocks === 0 ? ( 
+            {product.stocks === 0 ? (
               <ContainerStocksStatus>
-              <StockStatus>
-                Out of Stock
-              </StockStatus>
+                <StockStatus>Out of Stock</StockStatus>
               </ContainerStocksStatus>
             ) : (
               <NumberOfStocks>{product.stocks} stocks</NumberOfStocks>
@@ -45,10 +48,8 @@ const Page = () => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
-              {product.stocks === 0  ? (
-                <NoStocksButton>
-                  Add to Cart
-                </NoStocksButton>
+              {product.stocks === 0 ? (
+                <NoStocksButton>Add to Cart</NoStocksButton>
               ) : (
                 <AddToCartButton
                   onClick={() => {
@@ -61,6 +62,11 @@ const Page = () => {
             </div>
           </ProductCard>
         ))}
+        {showSuccessMessage && (
+          <SuccessMessage>
+            Item added successfully!
+          </SuccessMessage>
+        )}
       </div>
       <Footer />
     </Container>
@@ -178,4 +184,16 @@ const AddToCartButton = styled.button`
   &:hover {
     transform: scale(1.1);
   }
+`;
+const SuccessMessage = styled.div`
+  background-color: #4caf50;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  z-index: 999;
 `;

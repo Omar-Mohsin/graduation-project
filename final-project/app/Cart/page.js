@@ -182,6 +182,8 @@ const SwitchHolder = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top : 20px;
+  margin-bottom : 20px;
+
 `;
 const ToggleCurrencySlider = styled.span`
   position: absolute;

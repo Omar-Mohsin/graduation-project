@@ -9,7 +9,6 @@ function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
   const [cartSummary, setCartSummary] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0); // State to store the total price
   const [delivery_info, setDelivery_info] = useState({
     firstName: "",
     lastName: "",
