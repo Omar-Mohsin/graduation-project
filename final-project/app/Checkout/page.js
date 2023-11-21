@@ -1,16 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector , useDispatch } from "react-redux";
-import { SelectUser  } from "@/redux/auth/authSlice";
+import { useSelector } from "react-redux";
+import { SelectUser , SelectUserId } from "@/redux/auth/authSlice";
 import Link from "next/link";
-import { SelectAllCart , clearCart } from "@/redux/cart/cartSlice";
+import { SelectAllCart } from "@/redux/cart/cartSlice";
 function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
-  const dispatch = useDispatch();
   const [cartSummary, setCartSummary] = useState({});
-
+  const [totalPrice, setTotalPrice] = useState(0); // State to store the total price
   const [delivery_info, setDelivery_info] = useState({
     firstName: "",
     lastName: "",
@@ -26,15 +25,15 @@ function Page() {
       const summary = cart.reduce((acc, item) => {
         const { id, name, price } = item;
 
-        if (!acc[name]) {
-          acc[name] = {
+        if (!acc[id]) {
+          acc[id] = {
             id: id, 
             name: name,
             quantity: 1,
             price: price,
           };
         } else {
-          acc[name].quantity += 1;
+          acc[id].quantity += 1;
         }
 
         acc.totalPrice = (acc.totalPrice || 0) + price;
@@ -47,8 +46,6 @@ function Page() {
 
     calculateCartSummary();
 }, [cart]);
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDelivery_info((prevData) => ({
@@ -58,14 +55,14 @@ function Page() {
   };
 
   const handleSubmit = async() => {
-   const data = {
-      id :user.id,
-      cartSummary,
-      delivery_info,
-    };
+    const data = {
+       id :user.id,
+       cartSummary,
+       delivery_info,
+     };
     console.log("Form data:", data);
 
-    fetch("", {
+    fetch("http://localhost:8000/checkout/api/place_order/", {
       // put your url
       method: "POST",
       headers: {
@@ -77,7 +74,6 @@ function Page() {
       .then((responseData) => {
         if (responseData.success) {
           console.log("successful!");
-          dispatch(clearCart());
           window.location.href = "/";
         } else {
           console.error(" failed:", responseData.error);
