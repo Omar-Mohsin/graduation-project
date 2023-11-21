@@ -6,6 +6,7 @@ import {
   SelectAllCart,
   addToCart,
   removeFromCart,
+  clearCart,
 } from "@/redux/cart/cartSlice";
 import axios from "axios";
 import Link from "next/link";
@@ -63,11 +64,17 @@ function page() {
   const tax = subtotal * taxRate;
 
   const grandTotal = subtotal + tax;
+
+  const clearCartHandler = () => {
+    dispatch(clearCart());
+  };
   return (
     <CartContainer>
       {cart.length > 0 ? (
         <div>
           <SwitchHolder>
+          <ClearButton onClick={clearCartHandler}>clear cart</ClearButton>
+
             <ToggleCurrencySwitch>
               <ToggleCurrencyInput
                 type="checkbox"
@@ -129,8 +136,8 @@ function page() {
           <ButttonContainer>
             {user ? (
               <Link href={"/Checkout"}>
-              <CheckoutButton type="submit">Checkout</CheckoutButton>
-            </Link>
+                <CheckoutButton type="submit">Checkout</CheckoutButton>
+              </Link>
             ) : (
               <Link href={"/LogIn"}>
                 <CheckoutButton type="submit">Checkout</CheckoutButton>
@@ -153,7 +160,17 @@ const CartContainer = styled.div`
   background-color: white;
   padding: 20px;
 `;
+const ClearButton = styled.button` 
+background-color: red;
+border-radius: 10px;
+width: 100px;
+color: white;
+margin-left: 16px;
 
+&:hover {
+  background-color: #c0392b;
+}
+`;
 const ToggleCurrencySwitch = styled.label`
   position: relative;
   display: inline-block;
@@ -164,6 +181,7 @@ const ToggleCurrencySwitch = styled.label`
 const SwitchHolder = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-top : 20px;
 `;
 const ToggleCurrencySlider = styled.span`
   position: absolute;
