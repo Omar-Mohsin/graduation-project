@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
-import { SelectUser , SelectUserId } from "@/redux/auth/authSlice";
+import { useSelector , useDispatch } from "react-redux";
+import { SelectUser  } from "@/redux/auth/authSlice";
 import Link from "next/link";
-import { SelectAllCart } from "@/redux/cart/cartSlice";
+import { SelectAllCart , clearCart } from "@/redux/cart/cartSlice";
 function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
+  const dispatch = useDispatch();
   const [cartSummary, setCartSummary] = useState({});
 
   const [delivery_info, setDelivery_info] = useState({
@@ -76,6 +77,7 @@ function Page() {
       .then((responseData) => {
         if (responseData.success) {
           console.log("successful!");
+          dispatch(clearCart());
           window.location.href = "/";
         } else {
           console.error(" failed:", responseData.error);
