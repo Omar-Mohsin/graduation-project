@@ -30,7 +30,7 @@ function Page() {
 
   return (
     <>
-            <TitlePage>Top  3 Items</TitlePage>
+     <TitlePage>Top  3 Items</TitlePage>
 
     <Container>
       {firstFiveProducts.map((product) => (
@@ -91,7 +91,7 @@ backface-visibility: hidden;
 `;
 
 const ImageContainer = styled.div`
-width: 500px;
+width: 50%;
 height: 50%;
 padding-bottom: 150px;
 overflow: hidden;
