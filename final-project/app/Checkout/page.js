@@ -7,7 +7,6 @@ import Link from "next/link";
 import { SelectAllCart } from "@/redux/cart/cartSlice";
 function Page() {
   const user = useSelector(SelectUser);
-  const id = useSelector(SelectUserId);
   const cart = useSelector(SelectAllCart);
   const [cartSummary, setCartSummary] = useState({});
 
@@ -24,10 +23,11 @@ function Page() {
   useEffect(() => {
     const calculateCartSummary = () => {
       const summary = cart.reduce((acc, item) => {
-        const { name, price } = item;
+        const { id, name, price } = item;
 
         if (!acc[name]) {
           acc[name] = {
+            id: id, 
             name: name,
             quantity: 1,
             price: price,
@@ -45,7 +45,8 @@ function Page() {
     };
 
     calculateCartSummary();
-  }, [cart]);
+}, [cart]);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,7 +58,7 @@ function Page() {
 
   const handleSubmit = async() => {
    const data = {
-      id :id,
+      id :user.id,
       cartSummary,
       delivery_info,
     };
