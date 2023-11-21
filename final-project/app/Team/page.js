@@ -7,12 +7,12 @@ const TeamPage = () => {
   const teamMembers = [
     {
       name: 'Omar Mohsin',
-      position: 'Software Engineer Intern at MBC-Shahid',
+      position: 'Software Developer Engineer Intern at MBC-Shahid',
       image: 'https://picsum.photos/200/300',
     },
     {
       name: 'Mohammad Alrubbi',
-      position: 'Softawre Engineer at ',
+      position: 'Softawre Engineer at Nuummite ',
       image: 'https://picsum.photos/200/301',
     },
   ];
