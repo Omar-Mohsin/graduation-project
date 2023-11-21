@@ -46,7 +46,6 @@ function Navbar() {
 
         {user ? (
           <NavLink>
-            {" "}
             <button onClick={handleLogOut}>Log Out </button>
           </NavLink>
         ) : (

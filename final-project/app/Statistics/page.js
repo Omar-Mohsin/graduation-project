@@ -39,7 +39,6 @@ function Page() {
             <img src={product.image}></img>
           </ImageContainer>
           <ProductTitle>{product.title}</ProductTitle>
-          <ProductDescription>{product.description}</ProductDescription>
           <ProductPrice>{product.price}</ProductPrice>
           <QuantitySold>Quantity Sold: {product.quantity_sold}</QuantitySold>
         </ProductCard>

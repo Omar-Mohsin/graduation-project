@@ -8,7 +8,6 @@ import {
   removeFromCart,
   clearCart,
 } from "@/redux/cart/cartSlice";
-import axios from "axios";
 import Link from "next/link";
 import styled from "styled-components";
 
