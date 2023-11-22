@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
 import { addToCart } from "@/redux/cart/cartSlice";
-import { SelectUser } from "@/redux/auth/authSlice";
 import styled from "styled-components";
 import { Footer } from "@/components";
 
@@ -31,7 +30,7 @@ const Page = () => {
         {products.map((product) => (
           <ProductCard key={product.id}>
             <ProductImage>
-              <img src={product.image} alt={product.name} />
+              <img src={product.image_url} alt={product.name} />
             </ProductImage>
 
             {product.stocks === 0 ? (
@@ -42,7 +41,7 @@ const Page = () => {
               <NumberOfStocks>{product.stocks} stocks</NumberOfStocks>
             )}
 
-            <ProductTitle>{product.title}</ProductTitle>
+            <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div className="mt-4 flex justify-between items-center">
               {product.stocks === 0 ? (
