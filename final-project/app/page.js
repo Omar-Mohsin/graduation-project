@@ -11,7 +11,6 @@ import { Footer } from "@/components";
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
-  const user = useSelector(SelectUser); 
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   useEffect(() => {
@@ -91,7 +90,6 @@ const ProductCard = styled.div`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
-  transform: ${(props) => (props.isFlipped ? "rotateY(180deg)" : "rotateY(0deg)")};
   transform-style: preserve-3d;
   backface-visibility: hidden;
 `;

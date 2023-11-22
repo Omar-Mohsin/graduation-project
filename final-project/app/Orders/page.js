@@ -62,14 +62,14 @@ function Page() {
 const PageContainer = styled.div`
 margin-top:100px;
 display:flex;
-justify-content: center; /* Center the cards in the container */
+justify-content: center; 
 
 `;
 
 const OrderContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Center the cards in the container */
+  justify-content: center; 
   gap: 20px;
   max-width: 800px;
 `;
