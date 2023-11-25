@@ -16,7 +16,6 @@ const Page = () => {
     dispatch(fetchProducts());
   }, []);
 
-
   const addButtonHandler = (product) => {
     dispatch(addToCart(product));
     setShowSuccessMessage(true);
@@ -59,9 +58,7 @@ const Page = () => {
           </ProductCard>
         ))}
         {showSuccessMessage && (
-          <SuccessMessage>
-            Item added successfully!
-          </SuccessMessage>
+          <SuccessMessage>Item added successfully!</SuccessMessage>
         )}
       </div>
       <Footer />
@@ -121,10 +118,10 @@ const ProductTitle = styled.h2`
 `;
 
 const NumberOfStocks = styled.h1`
-font-size: 1.2rem;
+  font-size: 1.2rem;
   color: green;
   margin-top: 0.5rem;
-`
+`;
 const ProductPrice = styled.p`
   color: #666;
   font-size: 1.25rem;
@@ -135,10 +132,9 @@ const ContainerStocksStatus = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom : 30px;
-`
+  margin-bottom: 30px;
+`;
 const StockStatus = styled.div`
-  
   background-color: red;
   color: white;
   padding: 8px;
@@ -153,21 +149,21 @@ const NoStocksButton = styled.button`
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
-  width: 100%;  
+  width: 100%;
   height: 50px;
   border-radius: 99px;
   font-weight: 600;
-  cursor:not-allowed;
+  cursor: not-allowed;
   background-color: gray;
   color: #fff;
-`
+`;
 const AddToCartButton = styled.button`
   margin-left: auto;
   margin-right: auto;
   display: inline-block;
   padding: 0.5rem 1rem;
   border: none;
-  width: 100%;  
+  width: 100%;
   height: 50px;
   border-radius: 99px;
   cursor: pointer;

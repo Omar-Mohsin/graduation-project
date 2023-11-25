@@ -9,6 +9,7 @@ function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
   const [cartSummary, setCartSummary] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0); // State to store the total price
   const [delivery_info, setDelivery_info] = useState({
     firstName: "",
     lastName: "",
@@ -23,28 +24,36 @@ function Page() {
     const calculateCartSummary = () => {
       const summary = cart.reduce((acc, item) => {
         const { id, name, price } = item;
-
-        if (!acc[id]) {
-          acc[id] = {
-            id: id, 
-            name: name,
-            quantity: 1,
-            price: price,
-          };
-        } else {
-          acc[id].quantity += 1;
+  
+        if (id !== 'totalPrice') {
+          if (!acc[id]) {
+            acc[id] = {
+              id: id,
+              name: name,
+              quantity: 1,
+              price: price,
+            };
+          } else {
+            acc[id].quantity += 1;
+          }
         }
-
-        acc.totalPrice = (acc.totalPrice || 0) + price;
-
+  
         return acc;
       }, {});
-
-      setCartSummary(summary);
+  
+      const totalPrice = cart.reduce((total, item) => {
+        if (item.id !== 'totalPrice') {
+          return total + item.price;
+        }
+        return total;
+      }, 0);
+  
+      setTotalPrice(totalPrice); // Save the totalPrice separately
+      setCartSummary({ ...summary }); // Set the cartSummary without totalPrice
     };
-
+  
     calculateCartSummary();
-}, [cart]);
+  }, [cart]);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDelivery_info((prevData) => ({
