@@ -11,10 +11,24 @@ const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [searchField, setSearchField] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  useEffect(() => {
+    const newFilteredProudcts = products.filter((post) => {
+      return post.title.toLowerCase().includes(searchField.toLowerCase());
+    });
+
+    setFilteredProducts(newFilteredProudcts);
+  }, [products, searchField]);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
+
+  const searchHandler = (event) => {
+    setSearchField(event.target.value);
+  };
 
   const addButtonHandler = (product) => {
     dispatch(addToCart(product));
@@ -25,10 +39,18 @@ const Page = () => {
   };
   return (
     <Container>
+       <SearchContainer>
+        <div >
+          <input 
+            placeholder='Search...'
+            onChange={searchHandler}
+          />
+        </div>
+      </SearchContainer>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductCard key={product.id}>
-            <ProductImage>
+        {filteredProducts.map((product) => (
+      <ProductCard key={product.id}>
+      <ProductImage>
               <img src={product.image_url} alt={product.name} />
             </ProductImage>
 
@@ -69,11 +91,25 @@ const Page = () => {
 export default Page;
 
 const Container = styled.div`
-  margin: 0 auto;
-  padding: 1rem;
-  text-align: center;
+margin: 0 auto;
+padding: 1rem;
+text-align: center
 `;
+const SearchContainer = styled.div`
+margin: 2rem auto;
+text-align: center;
 
+input {
+  width: 30%;  
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 2px solid green;  
+  border-radius: 5px;  
+  text-align: center;  
+}
+
+
+`
 const ProductCard = styled.div`
   background: #fff;
   padding: 1rem;

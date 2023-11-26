@@ -9,7 +9,7 @@ function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
   const [cartSummary, setCartSummary] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0); // State to store the total price
+  const [totalPrice, setTotalPrice] = useState(0)
   const [delivery_info, setDelivery_info] = useState({
     firstName: "",
     lastName: "",
@@ -48,8 +48,8 @@ function Page() {
         return total;
       }, 0);
   
-      setTotalPrice(totalPrice); // Save the totalPrice separately
-      setCartSummary({ ...summary }); // Set the cartSummary without totalPrice
+      setTotalPrice(totalPrice); 
+      setCartSummary({ ...summary }); 
     };
   
     calculateCartSummary();
