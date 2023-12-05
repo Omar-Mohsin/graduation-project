@@ -7,6 +7,7 @@ import { addToCart } from "@/redux/cart/cartSlice";
 import styled from "styled-components";
 import { Footer } from "@/components";
 
+
 const Page = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
@@ -15,8 +16,8 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState(products);
 
   useEffect(() => {
-    const newFilteredProudcts = products.filter((post) => {
-      return post.title.toLowerCase().includes(searchField.toLowerCase());
+    const newFilteredProudcts = products.filter((product) => {
+      return product.name.toLowerCase().includes(searchField.toLowerCase());
     });
 
     setFilteredProducts(newFilteredProudcts);
@@ -35,7 +36,7 @@ const Page = () => {
     setShowSuccessMessage(true);
     setTimeout(() => {
       setShowSuccessMessage(false);
-    }, 1000);
+    }, 2000);
   };
   return (
     <Container>
@@ -83,6 +84,7 @@ const Page = () => {
           <SuccessMessage>Item added successfully!</SuccessMessage>
         )}
       </div>
+    
       <Footer />
     </Container>
   );

@@ -11,7 +11,7 @@ function page() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async() => {
+  const handleSignIn = async() => {
     const data = {
       username,
       password,
@@ -67,7 +67,7 @@ function page() {
               onChange={handlePasswordChange}
             />
 
-            <LoginButton onClick={handleSubmit}>Sign In</LoginButton>
+            <LoginButton onClick={handleSignIn}>Sign In</LoginButton>
 
             <SignUpLink href="/SignUp">
               Don't have an account? Sign Up
