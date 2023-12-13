@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Products_URL = 'http://localhost:8000/items/api/data/'; // change this API URL  
+const Products_URL = 'https://fakestoreapi.com/products'; // change this API URL  
 
 const initialState = {
   productsList: [],
@@ -45,4 +45,8 @@ export const { reducer: productsReducer } = productsSlice;
 export const SelectAllProducts = (state) => {
   return state.products.productsList;
 }
+
+export const SelectProductById = (state, productId) => {
+  return state.products.productsList.find(product => product.id === parseInt(productId));
+};
 export default productsSlice.reducer;
