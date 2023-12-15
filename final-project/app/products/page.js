@@ -5,9 +5,9 @@ import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
 import { addToCart } from "@/redux/cart/cartSlice";
 import styled from "styled-components";
-import { Footer } from "@/components";
-import Link from "next/link";
+import { SelectUser } from "@/redux/auth/authSlice";
 const Page = () => {
+  const user  = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -15,12 +15,33 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [isFavorites, setFavorites] = useState({});
 
-  const handleFavorite = (productId) => {
-    setFavorites((prevFavorites) => ({
-      ...prevFavorites,
-      [productId]: !prevFavorites[productId],
-    }));
+  const addToFavorite = async (product) => {
+    try {
+      const response = await fetch(`/api/addToFavorite/${product.id}`, {  // change the api url
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          productId: product.id,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to add to favorites');
+      }
+  
+          setShowSuccessMessage(true);
+  
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error adding to favorites:', error.message);
+    }
   };
+  
   useEffect(() => {
     const newFilteredProudcts = products.filter((product) => {
       return product.title.toLowerCase().includes(searchField.toLowerCase());
@@ -70,8 +91,8 @@ const Page = () => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div>
-              <button onClick={() => handleFavorite(product.id)}>
-                {isFavorites[product.id] ? "❤️" : "🖤"}
+              <button onClick={() => addToFavorite(product)}>
+                
               </button>
             </div>
             <div className="mt-4 flex justify-between items-center">

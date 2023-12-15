@@ -1,0 +1,33 @@
+in product page 
+
+make a authrization , that just the users whos sign it can use the fav 
+
+
+
+make sure about the url 
+
+
+# order page 
+
+desgin it 
+
+
+#make sure about the sign up 
+
+
+# contact message to the backend  // --- >  in root page 
+
+
+
+
+
+##### in mobile ####
+
+orders design and testing 
+
+top salers
+
+
+
+
+############make sure about all url in the both project fit the backend endpoints

@@ -28,11 +28,18 @@ function Navbar() {
         <Link href="/About">
           <NavLink>About</NavLink>
         </Link>
+            <Link href="/Products">
+          <NavLink>Products</NavLink>
+        </Link>
         <Link href="/Statistics">
           <NavLink>Statistics</NavLink>
         </Link>
+       
+        <Link href="/Questions">
+          <NavLink>Questions</NavLink>
+        </Link>
 
-        {true ? (
+        {user ? (
           <>
           <Link href="/Orders">
             <NavLink>Orders</NavLink>

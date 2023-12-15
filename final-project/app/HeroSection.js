@@ -21,7 +21,7 @@ function HeroSection() {
             Welcome to my watermelon Store!
           </Typography>
           <div className="flex gap-4" style={{ marginTop: 40 }}>
-            <Link href="/products">
+            <Link href="/Products">
               <StyledButton color="blue" size="lg" className="goToProducts">
                 Go To Products
               </StyledButton>
@@ -54,9 +54,7 @@ export default HeroSection;
 const StyledButton = styled(Button)`
 
 font-weight: bold;
-font size: 25px;
 height: 50px;
-marginLeft: 100px;
 &.goToProducts {
     width: 130px;
     background-color: black;
