@@ -32,10 +32,16 @@ function Navbar() {
           <NavLink>Statistics</NavLink>
         </Link>
 
-        {user ? (
+        {true ? (
+          <>
           <Link href="/Orders">
             <NavLink>Orders</NavLink>
           </Link>
+          <Link href="/Fav">
+          <NavLink>Fav</NavLink>
+
+        </Link>
+          </>
         ) : (
           <></>
         )}

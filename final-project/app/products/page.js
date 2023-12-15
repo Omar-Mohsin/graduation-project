@@ -13,7 +13,14 @@ const Page = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [isFavorites, setFavorites] = useState({});
 
+  const handleFavorite = (productId) => {
+    setFavorites((prevFavorites) => ({
+      ...prevFavorites,
+      [productId]: !prevFavorites[productId],
+    }));
+  };
   useEffect(() => {
     const newFilteredProudcts = products.filter((product) => {
       return product.title.toLowerCase().includes(searchField.toLowerCase());
@@ -48,11 +55,9 @@ const Page = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id}>
-            <Link href="products/" key={product.id}>
-              <ProductImage>
-                <img src={product.image} alt={product.name} />
-              </ProductImage>
-            </Link>
+            <ProductImage>
+              <img src={product.image} alt={product.name} />
+            </ProductImage>
 
             {product.stocks === 0 ? (
               <ContainerStocksStatus>
@@ -64,6 +69,11 @@ const Page = () => {
 
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
+            <div>
+              <button onClick={() => handleFavorite(product.id)}>
+                {isFavorites[product.id] ? "❤️" : "🖤"}
+              </button>
+            </div>
             <div className="mt-4 flex justify-between items-center">
               {product.stocks === 0 ? (
                 <NoStocksButton>Add to Cart</NoStocksButton>
@@ -83,7 +93,6 @@ const Page = () => {
           <SuccessMessage>Item added successfully!</SuccessMessage>
         )}
       </div>
-
     </Container>
   );
 };
