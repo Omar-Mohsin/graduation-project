@@ -1,21 +1,22 @@
 in product page 
 
-make a authrization , that just the users whos sign it can use the fav 
+make a authrization , that just the users whos sign it can use the fav      done
 
 
-
+########## make a button appear for users just , and if the product appeawr on the fav dont apear the button        done
+######## in fav page make sure that when is no product in fav appear a massege that is no fav   done 
 make sure about the url 
 
 
 # order page 
 
-desgin it 
+desgin it  design it with rubbi
 
 
-#make sure about the sign up 
+#make sure about the sign up with rubbi
 
 
-# contact message to the backend  // --- >  in root page 
+# contact message to the backend  // --- >  in root page     done
 
 
 

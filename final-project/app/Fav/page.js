@@ -1,19 +1,18 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { SelectUser } from '@/redux/auth/authSlice'
-import { SelectAllFavorites } from '@/redux/Fav/favSlice';
-import { fetchfavorites } from '@/redux/Fav/favSlice';
-
-import Link from 'next/link';
-import styled from 'styled-components';
+"use client";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { SelectUser } from "@/redux/auth/authSlice";
+import { SelectAllFavorites } from "@/redux/Fav/favSlice";
+import { fetchfavorites } from "@/redux/Fav/favSlice";
+import Link from "next/link";
+import styled from "styled-components";
 
 function Page() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const dispatch = useDispatch();
   const user = useSelector(SelectUser);
-  const fav = useSelector(SelectAllFavorites);
+  const favorites = useSelector(SelectAllFavorites);
 
   useEffect(() => {
     dispatch(fetchfavorites());
@@ -21,15 +20,16 @@ function Page() {
 
   const removeFaviorite = async (id) => {
     try {
-      const response = await fetch(`/api/removeFavorite/${id}`, {  // change the api url 
-        method: 'DELETE',
+      const response = await fetch(`/api/removeFavorite/${id}`, {
+        // change the api url
+        method: "DELETE",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        throw new Error('Failed to remove favorite');
+        throw new Error("Failed to remove favorite");
       }
       setShowSuccessMessage(true);
 
@@ -37,43 +37,56 @@ function Page() {
         setShowSuccessMessage(false);
       }, 2000);
     } catch (error) {
-      console.error('Error removing favorite:', error.message);
+      console.error("Error removing favorite:", error.message);
     }
   };
   return (
     <Container>
-      {user ? (  // change to    {user ? (
+      {user ? ( // change to    {user ? (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-            {fav?.map(item => (
-
-              <ProductCard key={item.id}>
-                <ProductImage>
-                  <img src={item.image} alt="product image" />
-                </ProductImage>
-                <ProductTitle>{item.title}</ProductTitle>
-                <ProductPrice>{item.price}</ProductPrice>
-                <RemoveFromFavButton onClick={removeFaviorite}>Remove to fav</RemoveFromFavButton>
-              </ProductCard>
-            ))}
-            {showSuccessMessage && (
-              <SuccessMessage>Item removed successfully!</SuccessMessage>
-            )}
-          </div>
-
+          {favorites.length === 0 ? ( //favorites.length === 0
+              <div className="flex flex-col justify-center items-center h-screen w-full">
+              <h1 className="text-3xl font-bold">No Favorites</h1>
+              <Link href="/Products">
+                <p style={{ color: 'blue', marginTop: '10px', cursor: 'pointer' }}>
+                  Please add some
+                </p>
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {favorites?.map((item) => (
+                <ProductCard key={item.id}>
+                  <ProductImage>
+                    <img src={item.image} alt="product image" />
+                  </ProductImage>
+                  <ProductTitle>{item.title}</ProductTitle>
+                  <ProductPrice>{item.price}</ProductPrice>
+                  <RemoveFromFavButton onClick={removeFaviorite}>
+                    Remove to fav
+                  </RemoveFromFavButton>
+                </ProductCard>
+              ))}
+              {showSuccessMessage && (
+                <SuccessMessage>Item removed successfully!</SuccessMessage>
+              )}
+            </div>
+          )}
         </>
       ) : (
         <UnauthorizedContainer>
-        <UnauthorizedMessage>
-          <p>
-            You are not authorized to this page{' '}
-            <Link href={'/LogIn'} style={{ color: 'blue', cursor: 'pointer' }}>
-              please sign in
-            </Link>
-          </p>
-        </UnauthorizedMessage>
-      </UnauthorizedContainer>
+          <UnauthorizedMessage>
+            <p>
+              You are not authorized to this page{" "}
+              <Link
+                href={"/LogIn"}
+                style={{ color: "blue", cursor: "pointer" }}
+              >
+                please sign in
+              </Link>
+            </p>
+          </UnauthorizedMessage>
+        </UnauthorizedContainer>
       )}
     </Container>
   );
@@ -81,14 +94,13 @@ function Page() {
 
 export default Page;
 
-
 const Container = styled.div`
   margin: 0 auto;
   padding: 1rem;
   text-align: center;
   display: flex;
-  flex-direction : row;
-  flex-wrap : wrap;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;
 
 const ProductCard = styled.div`
@@ -97,7 +109,7 @@ const ProductCard = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
   transition: transform 0.3s, box-shadow 0.3s;
-  margin-top : 10px;
+  margin-top: 10px;
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -181,5 +193,5 @@ const UnauthorizedContainer = styled.div`
 `;
 
 const UnauthorizedMessage = styled.div`
-text-align: center;
+  text-align: center;
 `;

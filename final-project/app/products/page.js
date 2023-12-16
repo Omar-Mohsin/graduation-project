@@ -3,12 +3,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
-import { addToCart } from "@/redux/cart/cartSlice";
+import { addToCart } from "@/redux/cart/cartSlice"
+import { SelectAllFavorites } from "@/redux/Fav/favSlice";
 import styled from "styled-components";
 import { SelectUser } from "@/redux/auth/authSlice";
 const Page = () => {
   const user = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
+  const favorites = useSelector(SelectAllFavorites);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
@@ -16,10 +18,16 @@ const Page = () => {
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
 
+
+
+  const isProductInFavorites = (productId) => {
+    return favorites.some((favProduct) => favProduct.productId === productId);
+  };
+
+
   const addToFavorite = async (product) => {
     try {
       const response = await fetch(`/api/addToFavorite/${product.id}`, {
-        // change the api url
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,13 +116,22 @@ const Page = () => {
                     Add to Cart
                   </AddToCartButton>
 
-                  <AddToFavButton
-                   onClick={() => {
-                    addToFavorite(product);
-                  }}
-                  >
-                    Add to Fav
-                  </AddToFavButton>
+                  {
+
+                    user &&isProductInFavorites(product.id) ? (
+                      
+                      <AddToFavButton
+                        onClick={() => {
+                          addToFavorite(product);
+                        }}
+                      >
+                        Add to Fav
+                      </AddToFavButton>
+                    ) : (
+                      <div></div>
+                    )
+                  }
+                
                 </>
               )}
             </div>
@@ -266,23 +283,22 @@ const SuccessMessage = styled.div`
   z-index: 999;
 `;
 
-const AddToFavButton =  styled.button`
-margin-left: 10px;
-margin-right: auto;
-display: inline-block;
-padding: 0.5rem 1rem;
-border: none;
-width: 100%;
-height: 50px;
-border-radius: 99px;
-cursor: pointer;
-transition: transform 0.2s, background-color 0.2s;
-font-weight: 600;
-background-color: limegreen;
-color: #fff;
+const AddToFavButton = styled.button`
+  margin-left: 10px;
+  margin-right: auto;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: none;
+  width: 100%;
+  height: 50px;
+  border-radius: 99px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  font-weight: 600;
+  background-color: limegreen;
+  color: #fff;
 
-&:hover {
-  transform: scale(1.1);
-}
-
-`
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
