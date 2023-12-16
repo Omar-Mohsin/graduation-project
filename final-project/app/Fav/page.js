@@ -42,7 +42,7 @@ function Page() {
   };
   return (
     <Container>
-      {true ? (  // change to    {user ? (
+      {user ? (  // change to    {user ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
@@ -64,12 +64,16 @@ function Page() {
 
         </>
       ) : (
-        <p>
-          You are not authorized to this page{' '}
-          <Link href={'/SignIn'} style={{ color: 'blue', cursor: 'pointer' }}>
-            please sign in
-          </Link>
-        </p>
+        <UnauthorizedContainer>
+        <UnauthorizedMessage>
+          <p>
+            You are not authorized to this page{' '}
+            <Link href={'/LogIn'} style={{ color: 'blue', cursor: 'pointer' }}>
+              please sign in
+            </Link>
+          </p>
+        </UnauthorizedMessage>
+      </UnauthorizedContainer>
       )}
     </Container>
   );
@@ -166,4 +170,16 @@ const SuccessMessage = styled.div`
   transform: translateX(-50%);
   border-radius: 10px;
   z-index: 999;
+`;
+
+const UnauthorizedContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+`;
+
+const UnauthorizedMessage = styled.div`
+text-align: center;
 `;

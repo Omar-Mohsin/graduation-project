@@ -161,13 +161,13 @@ function Page() {
               <FormTextarea name="additionalDeliveryInfo" />
             </FormGroup>
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-          </CheckoutForm>
+          </CheckoutForm> 
         </>
       ) : (
         <>
           <p>
             You are not athorize to this page{" "}
-            <Link href={"/SignIn"} style={{ color: "blue", cursor: "pointer" }}>
+            <Link href={"/LogIn"} style={{ color: "blue", cursor: "pointer" }}>
               {" "}
               please sign in
             </Link>

@@ -5,7 +5,8 @@ import React, { createContext } from 'react';
 
 export default function page() {
   return (
-    <div className="w-full px pt-16">
+    
+    <div className="w-full px pt-20">
       <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2">
         <Disclosure>
           {({ open }) => (
@@ -101,5 +102,6 @@ export default function page() {
 
       </div>
     </div>
+
   )
 }

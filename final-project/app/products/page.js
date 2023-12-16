@@ -7,41 +7,43 @@ import { addToCart } from "@/redux/cart/cartSlice";
 import styled from "styled-components";
 import { SelectUser } from "@/redux/auth/authSlice";
 const Page = () => {
-  const user  = useSelector(SelectUser);
+  const user = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
+
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [isFavorites, setFavorites] = useState({});
 
   const addToFavorite = async (product) => {
     try {
-      const response = await fetch(`/api/addToFavorite/${product.id}`, {  // change the api url
-        method: 'POST',
+      const response = await fetch(`/api/addToFavorite/${product.id}`, {
+        // change the api url
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userId: user.id,
           productId: product.id,
         }),
       });
-  
+
       if (!response.ok) {
-        throw new Error('Failed to add to favorites');
+        throw new Error("Failed to add to favorites");
       }
-  
-          setShowSuccessMessage(true);
-  
+
+      setShowSuccessFavMessage(true);
+
       setTimeout(() => {
-        setShowSuccessMessage(false);
+        setShowSuccessFavMessage(false);
       }, 2000);
     } catch (error) {
-      console.error('Error adding to favorites:', error.message);
+      console.error("Error adding to favorites:", error.message);
     }
   };
-  
+
   useEffect(() => {
     const newFilteredProudcts = products.filter((product) => {
       return product.title.toLowerCase().includes(searchField.toLowerCase());
@@ -91,27 +93,38 @@ const Page = () => {
             <ProductTitle>{product.title}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div>
-              <button onClick={() => addToFavorite(product)}>
-                
-              </button>
+              <button onClick={() => addToFavorite(product)}></button>
             </div>
             <div className="mt-4 flex justify-between items-center">
               {product.stocks === 0 ? (
                 <NoStocksButton>Add to Cart</NoStocksButton>
               ) : (
-                <AddToCartButton
-                  onClick={() => {
-                    addButtonHandler(product);
+                <>
+                  <AddToCartButton
+                    onClick={() => {
+                      addButtonHandler(product);
+                    }}
+                  >
+                    Add to Cart
+                  </AddToCartButton>
+
+                  <AddToFavButton
+                   onClick={() => {
+                    addToFavorite(product);
                   }}
-                >
-                  Add to Cart
-                </AddToCartButton>
+                  >
+                    Add to Fav
+                  </AddToFavButton>
+                </>
               )}
             </div>
           </ProductCard>
         ))}
         {showSuccessMessage && (
           <SuccessMessage>Item added successfully!</SuccessMessage>
+        )}
+        {showSuccessFavMessage && (
+          <SuccessMessage>Item added successfully to favorites!</SuccessMessage>
         )}
       </div>
     </Container>
@@ -252,3 +265,24 @@ const SuccessMessage = styled.div`
   border-radius: 10px;
   z-index: 999;
 `;
+
+const AddToFavButton =  styled.button`
+margin-left: 10px;
+margin-right: auto;
+display: inline-block;
+padding: 0.5rem 1rem;
+border: none;
+width: 100%;
+height: 50px;
+border-radius: 99px;
+cursor: pointer;
+transition: transform 0.2s, background-color 0.2s;
+font-weight: 600;
+background-color: limegreen;
+color: #fff;
+
+&:hover {
+  transform: scale(1.1);
+}
+
+`
