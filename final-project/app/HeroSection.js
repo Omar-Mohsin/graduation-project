@@ -7,8 +7,10 @@ import avata1 from "../assert/avatar1.svg";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
-
+import { SelectUser } from "@/redux/auth/authSlice";
+import { useSelector } from "react-redux";
 function HeroSection() {
+  const user = useSelector(SelectUser);
   return (
     <header className="bg-white p-8 " style={{ height: "100vh" }}>
       <div className="container mx-auto grid h-full gap-10 min-h-[60vh] w-full grid-cols-1 items-center lg:grid-cols-2">
@@ -26,11 +28,20 @@ function HeroSection() {
                 Go To Products
               </StyledButton>
             </Link>
-            <Link href="/LogIn">
-              <StyledButton color="gray" size="lg" className="login">
-                Log in
-              </StyledButton>
-            </Link>
+            {
+              user?(
+                    <></>
+              ):(
+
+                <Link href="/LogIn">
+                <StyledButton color="gray" size="lg" className="login">
+                  Log in
+                </StyledButton>
+              </Link>
+
+              )
+            }
+         
           </div>
           <Typography
             variant="lead"

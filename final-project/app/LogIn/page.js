@@ -18,7 +18,7 @@ function page() {
     };
 
 
-    fetch("http://localhost:8000/api/login/", { // change the url
+    fetch("https://watermelon1.pythonanywhere.com/api/login/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",

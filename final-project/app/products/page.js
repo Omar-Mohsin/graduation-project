@@ -4,43 +4,59 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
 import { addToCart } from "@/redux/cart/cartSlice"
-import { SelectAllFavorites } from "@/redux/Fav/favSlice";
 import styled from "styled-components";
 import { SelectUser } from "@/redux/auth/authSlice";
+import axios from "axios";
 const Page = () => {
   const user = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
-  const favorites = useSelector(SelectAllFavorites);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
 
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [favorites , setFavorites] = useState({});
 
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`);
+        setFavorites(response.data);
+      } catch (error) {
+        console.error("Error fetching favorites:", error.message);
+      }
+    };
+  
+    fetchData(); // Immediately invoke the async function
+  
+  }, []); // Make sure to include dependencies if needed
 
   const isProductInFavorites = (productId) => {
-    return favorites.some((favProduct) => favProduct.productId === productId);
+    console.log(favorites.favorite_items?.some((favProduct) => favProduct.id === productId));
+    return !favorites.favorite_items?.some((favProduct) => favProduct.id === productId);
   };
 
 
   const addToFavorite = async (product) => {
+    const data= {
+      userId: user.id,
+      productId: product.id,
+    }
+    console.log(data);
     try {
-      const response = await fetch(`/api/addToFavorite/${product.id}`, {
+      const response = await fetch('https://watermelon1.pythonanywhere.com/items/api/add-to-favorite/', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          userId: user.id,
-          productId: product.id,
-        }),
+        body: JSON.stringify(data),
       });
 
+      console.log(response)
       if (!response.ok) {
         throw new Error("Failed to add to favorites");
-      }
+      }``
 
       setShowSuccessFavMessage(true);
 
@@ -54,7 +70,7 @@ const Page = () => {
 
   useEffect(() => {
     const newFilteredProudcts = products.filter((product) => {
-      return product.title.toLowerCase().includes(searchField.toLowerCase());
+      return product.name.toLowerCase().includes(searchField.toLowerCase());
     });
 
     setFilteredProducts(newFilteredProudcts);
@@ -87,7 +103,7 @@ const Page = () => {
         {filteredProducts.map((product) => (
           <ProductCard key={product.id}>
             <ProductImage>
-              <img src={product.image} alt={product.name} />
+              <img src={product.image_url} alt={product.name} />
             </ProductImage>
 
             {product.stocks === 0 ? (
@@ -98,7 +114,7 @@ const Page = () => {
               <NumberOfStocks>{product.stocks} stocks</NumberOfStocks>
             )}
 
-            <ProductTitle>{product.title}</ProductTitle>
+            <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
             <div>
               <button onClick={() => addToFavorite(product)}></button>
@@ -118,7 +134,7 @@ const Page = () => {
 
                   {
 
-                    user &&isProductInFavorites(product.id) ? (
+                     user && isProductInFavorites(product.id) ? (
                       
                       <AddToFavButton
                         onClick={() => {

@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Products_URL = 'https://fakestoreapi.com/products'; // change this API URL  
+const Products_URL = 'https://watermelon1.pythonanywhere.com//items/api/data/'; // change this API URL  
 
 const initialState = {
   productsList: [],

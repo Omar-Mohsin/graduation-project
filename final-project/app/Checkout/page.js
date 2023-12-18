@@ -70,7 +70,7 @@ function Page() {
      };
     console.log("Form data:", data);
 
-    fetch("http://localhost:8000/checkout/api/place_order/", {
+    fetch("https://watermelon1.pythonanywhere.com/checkout/api/place_order/", {
       // put your url
       method: "POST",
       headers: {

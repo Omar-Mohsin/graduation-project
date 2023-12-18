@@ -1,23 +1,33 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { SelectUser } from "@/redux/auth/authSlice";
-import { SelectAllFavorites } from "@/redux/Fav/favSlice";
-import { fetchfavorites } from "@/redux/Fav/favSlice";
+import axios from "axios";
 import Link from "next/link";
 import styled from "styled-components";
 
 function Page() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const dispatch = useDispatch();
   const user = useSelector(SelectUser);
-  const favorites = useSelector(SelectAllFavorites);
-
+  const [favorites , setFavorites] = useState({});
+  console.log(user);
   useEffect(() => {
-    dispatch(fetchfavorites());
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`);
+        setFavorites(response.data);
+      } catch (error) {
+        console.error("Error fetching favorites:", error.message);
+      }
+    };
+  
+    fetchData(); // Immediately invoke the async function
+  
+  }, [user.id]); // Make sure to include dependencies if needed
+  
 
+  console.log(favorites);
   const removeFaviorite = async (id) => {
     try {
       const response = await fetch(`/api/removeFavorite/${id}`, {
@@ -44,7 +54,7 @@ function Page() {
     <Container>
       {user ? ( // change to    {user ? (
         <>
-          {favorites.length === 0 ? ( //favorites.length === 0
+          {favorites.favorite_items?.length === 0 ? ( //favorites.length === 0
               <div className="flex flex-col justify-center items-center h-screen w-full">
               <h1 className="text-3xl font-bold">No Favorites</h1>
               <Link href="/Products">
@@ -55,7 +65,7 @@ function Page() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {favorites?.map((item) => (
+              {favorites.favorite_items?.map((item) => (
                 <ProductCard key={item.id}>
                   <ProductImage>
                     <img src={item.image} alt="product image" />

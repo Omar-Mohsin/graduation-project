@@ -58,9 +58,11 @@ function Navbar() {
         </Link>
 
         {user ? (
+          <Link href="/">
           <NavLink>
             <button onClick={handleLogOut}>Log Out </button>
           </NavLink>
+        </Link>
         ) : (
           <Link href="/LogIn">
             <NavLink>Log In</NavLink>

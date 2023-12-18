@@ -22,7 +22,7 @@ const page = () => {
 
     console.log("Form data:", data);
 
-    fetch("http://localhost:8000/api/signup/", {
+    fetch("https://watermelon1.pythonanywhere.com/api/signup/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
