@@ -17,6 +17,7 @@ const Page = () => {
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [favorites , setFavorites] = useState({});
+  const [forceRender, setForceRender] = useState(false); 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,12 +29,11 @@ const Page = () => {
       }
     };
   
-    fetchData(); // Immediately invoke the async function
+    fetchData(); 
   
-  }, []); // Make sure to include dependencies if needed
+  }, [forceRender]); 
 
   const isProductInFavorites = (productId) => {
-    console.log(favorites.favorite_items?.some((favProduct) => favProduct.id === productId));
     return !favorites.favorite_items?.some((favProduct) => favProduct.id === productId);
   };
 
@@ -45,7 +45,7 @@ const Page = () => {
     }
     console.log(data);
     try {
-      const response = await fetch('https://watermelon1.pythonanywhere.com/items/api/add-to-favorite/', {
+      const response = await fetch('https://watermelon1.pythonanywhere.com/items/api/favorite/add/', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,10 +53,10 @@ const Page = () => {
         body: JSON.stringify(data),
       });
 
-      console.log(response)
       if (!response.ok) {
         throw new Error("Failed to add to favorites");
-      }``
+      }
+      setForceRender(!forceRender);
 
       setShowSuccessFavMessage(true);
 

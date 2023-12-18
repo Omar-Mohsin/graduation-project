@@ -9,7 +9,7 @@ function Page() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/statistics/"); // Put your URL here
+        const response = await fetch("https://watermelon1.pythonanywhere.com/api/statistics/"); // Put your URL here
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

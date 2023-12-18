@@ -11,7 +11,8 @@ function Page() {
 
   const user = useSelector(SelectUser);
   const [favorites , setFavorites] = useState({});
-  console.log(user);
+  const [forceRender, setForceRender] = useState(false); 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,25 +23,32 @@ function Page() {
       }
     };
   
-    fetchData(); // Immediately invoke the async function
+    fetchData(); 
+    console.log("fetching data"); 
+  }, [forceRender]); 
   
-  }, [user.id]); // Make sure to include dependencies if needed
-  
-
   console.log(favorites);
-  const removeFaviorite = async (id) => {
+  const removeFaviorite = async (item) => {
+    const data  = { 
+      userId: user.id,
+      productId: item.id,
+    }
+
+    
     try {
-      const response = await fetch(`/api/removeFavorite/${id}`, {
-        // change the api url
+      const response = await fetch(`https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
-      });
+        body: JSON.stringify(data),
 
+      });
+      
       if (!response.ok) {
         throw new Error("Failed to remove favorite");
       }
+      setForceRender(!forceRender);
       setShowSuccessMessage(true);
 
       setTimeout(() => {
@@ -65,14 +73,19 @@ function Page() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {favorites.favorite_items?.map((item) => (
-                <ProductCard key={item.id}>
+              {favorites.favorite_items?.map((product) => (
+                <ProductCard key={product.id}>
                   <ProductImage>
-                    <img src={item.image} alt="product image" />
+                    <img src={product.image_url} alt="product image" />
                   </ProductImage>
-                  <ProductTitle>{item.title}</ProductTitle>
-                  <ProductPrice>{item.price}</ProductPrice>
-                  <RemoveFromFavButton onClick={removeFaviorite}>
+                  <ProductTitle>{product.name}</ProductTitle>
+                  <ProductPrice>${product.price}</ProductPrice>
+                  <RemoveFromFavButton 
+                  
+                  onClick={() => {
+                    removeFaviorite(product);
+                  }}
+                  >
                     Remove to fav
                   </RemoveFromFavButton>
                 </ProductCard>
