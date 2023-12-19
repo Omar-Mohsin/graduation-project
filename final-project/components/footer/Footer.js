@@ -90,9 +90,7 @@ const FooterSection = styled.div`
 
 const SocialIcons = styled.div`
   display: flex;
-  align-items: center;
   margin-top: 20px;
-  justify-content: center;
 
   a {
     font-size: 24px;

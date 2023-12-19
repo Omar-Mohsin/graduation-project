@@ -1,13 +1,17 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { SelectUser  } from "@/redux/auth/authSlice";
+import { clearCart } from "@/redux/cart/cartSlice";
 import Link from "next/link";
 import { SelectAllCart } from "@/redux/cart/cartSlice";
+
 function Page() {
   const user = useSelector(SelectUser);
   const cart = useSelector(SelectAllCart);
+  const dispatch = useDispatch();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [cartSummary, setCartSummary] = useState({});
   const [totalPrice, setTotalPrice] = useState(0)
   const [delivery_info, setDelivery_info] = useState({
@@ -71,7 +75,7 @@ function Page() {
     console.log("Form data:", data);
 
     fetch("https://watermelon1.pythonanywhere.com/checkout/api/place_order/", {
-      // put your url
+    
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +86,14 @@ function Page() {
       .then((responseData) => {
         if (responseData.success) {
           console.log("successful!");
+          dispatch(clearCart());
           window.location.href = "/";
+          setShowSuccessMessage(true);
+          setTimeout(() => {
+            setShowSuccessMessage(false);
+          }, 2000);
+    
+          
         } else {
           console.error(" failed:", responseData.error);
         }
@@ -161,7 +172,7 @@ function Page() {
               <FormTextarea name="additionalDeliveryInfo" />
             </FormGroup>
             <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-          </CheckoutForm> 
+          </CheckoutForm>
         </>
       ) : (
         <>
@@ -173,6 +184,10 @@ function Page() {
             </Link>
           </p>
         </>
+      )}
+
+      {showSuccessMessage && (
+        <SuccessMessage>Item Orderd successfully!</SuccessMessage>
       )}
     </PageContainer>
   );
@@ -239,4 +254,16 @@ const SubmitButton = styled.button`
   &:hover {
     background-color: #45a049;
   }
+`;
+const SuccessMessage = styled.div`
+  background-color: #4caf50;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  z-index: 999;
 `;

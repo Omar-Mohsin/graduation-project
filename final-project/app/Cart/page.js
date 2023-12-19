@@ -145,7 +145,12 @@ function page() {
           </ButttonContainer>
         </div>
       ) : (
+        <CenteredDiv>
         <EmptyCartMessage>Cart is empty</EmptyCartMessage>
+        <Link href="/Products">
+          <p style={{color : 'blue'}}>Go to shop</p>
+        </Link>
+      </CenteredDiv>
       )}
     </CartContainer>
   );
@@ -406,4 +411,11 @@ const SummaryValue = styled.span`
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
+`;
+const CenteredDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width:100%;
 `;
