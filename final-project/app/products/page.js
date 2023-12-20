@@ -3,55 +3,89 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "@/redux/products/productsSlice";
 import { SelectAllProducts } from "@/redux/products/productsSlice";
-import { addToCart } from "@/redux/cart/cartSlice"
+import { addToCart } from "@/redux/cart/cartSlice";
 import styled from "styled-components";
 import { SelectUser } from "@/redux/auth/authSlice";
 import axios from "axios";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 const Page = () => {
   const user = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
-
   const [searchField, setSearchField] = useState("");
   const [filteredProducts, setFilteredProducts] = useState(products);
-  const [favorites , setFavorites] = useState({});
-  const [forceRender, setForceRender] = useState(false); 
+  const [favorites, setFavorites] = useState({});
+  const [forceRender, setForceRender] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`);
+        const response = await axios.get(
+          `https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`
+        );
         setFavorites(response.data);
       } catch (error) {
         console.error("Error fetching favorites:", error.message);
       }
     };
-  
-    fetchData(); 
-  
-  }, [forceRender]); 
+
+    fetchData();
+  }, [forceRender]);
 
   const isProductInFavorites = (productId) => {
-    return !favorites.favorite_items?.some((favProduct) => favProduct.id === productId);
+    return !favorites.favorite_items?.some(
+      (favProduct) => favProduct.id === productId
+    );
   };
 
 
-  const addToFavorite = async (product) => {
-    const data= {
+  const removeFaviorite = async (item) => {
+    const data  = { 
       userId: user.id,
-      productId: product.id,
+      productId: item.id,
     }
-    console.log(data);
+
+    
     try {
-      const response = await fetch('https://watermelon1.pythonanywhere.com/items/api/favorite/add/', {
-        method: "POST",
+      const response = await fetch(`https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
+
       });
+      
+      if (!response.ok) {
+        throw new Error("Failed to remove favorite");
+      }
+      setForceRender(!forceRender);
+   
+    } catch (error) {
+      console.error("Error removing favorite:", error.message);
+    }
+  };
+
+  const addToFavorite = async (product) => {
+    const data = {
+      userId: user.id,
+      productId: product.id,
+    };
+    console.log(data);
+    try {
+      const response = await fetch(
+        "https://watermelon1.pythonanywhere.com/items/api/favorite/add/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to add to favorites");
@@ -132,22 +166,38 @@ const Page = () => {
                     Add to Cart
                   </AddToCartButton>
 
-                  {
-
-                     user && isProductInFavorites(product.id) ? (
-                      
-                      <AddToFavButton
+                  {user && isProductInFavorites(product.id) ? (
+                    <FavoriteBorderIcon
+                      style={{
+                        color: "red",
+                        cursor: "pointer",
+                        width: "40%",
+                        fontSize: "30px",
+                      }}
+                      onClick={() => {
+                        addToFavorite(product);
+                      }}
+                    >
+                      Add to Fav
+                    </FavoriteBorderIcon>
+                  ) : (
+                 
+                      <FavoriteIcon
+                        style={{
+                          color: "red",
+                        
+                          cursor: "pointer",
+                          width: "40%",
+                          fontSize: "30px",
+                        }}
                         onClick={() => {
-                          addToFavorite(product);
+                          removeFaviorite(product);
                         }}
                       >
-                        Add to Fav
-                      </AddToFavButton>
-                    ) : (
-                      <div></div>
-                    )
-                  }
+                        Remove from Fav
+                      </FavoriteIcon>
                 
+                  )}
                 </>
               )}
             </div>

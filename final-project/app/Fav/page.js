@@ -27,7 +27,6 @@ function Page() {
     console.log("fetching data"); 
   }, [forceRender]); 
   
-  console.log(favorites);
   const removeFaviorite = async (item) => {
     const data  = { 
       userId: user.id,
@@ -60,9 +59,9 @@ function Page() {
   };
   return (
     <Container>
-      {user ? ( // change to    {user ? (
+      {user ? ( 
         <>
-          {favorites.favorite_items?.length === 0 ? ( //favorites.length === 0
+          {favorites.favorite_items?.length === 0 ? (
               <div className="flex flex-col justify-center items-center h-screen w-full">
               <h1 className="text-3xl font-bold">No Favorites</h1>
               <Link href="/Products">
