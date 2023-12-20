@@ -3,7 +3,7 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-import avata1 from "../assert/avatar1.svg";
+import watermelon from "../assert/watermelon.jpeg"; 
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -52,7 +52,7 @@ function HeroSection() {
           width={1024}
           height={1024}
           alt="team work"
-          src={avata1}
+          src={watermelon}
           className="h-[36rem] w-full rounded-xl object-cover"
         />
       </div>
