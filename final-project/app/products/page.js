@@ -166,7 +166,10 @@ const Page = () => {
                     Add to Cart
                   </AddToCartButton>
 
-                  {user && isProductInFavorites(product.id) ? (
+                  {user 
+                  
+                  ? (
+                  isProductInFavorites(product.id) ? (
                     <FavoriteBorderIcon
                       style={{
                         color: "red",
@@ -197,7 +200,9 @@ const Page = () => {
                         Remove from Fav
                       </FavoriteIcon>
                 
-                  )}
+                  )
+                ) : (<> </>)}
+
                 </>
               )}
             </div>
