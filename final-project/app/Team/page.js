@@ -50,6 +50,7 @@ const TeamPage = () => {
     </div>
   );
 };
+export default React.memo(TeamPage);
 
 const TeamCardsContainer = styled.div`
   height: 100vh;
@@ -137,4 +138,3 @@ const MemberPosition = styled.p`
   transition: margin-top 0.3s ease;
 `;
 
-export default TeamPage;

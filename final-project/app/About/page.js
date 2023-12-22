@@ -38,7 +38,7 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export default React.memo(AboutPage);
 
 const AboutContainer = styled.div`
   display: flex;

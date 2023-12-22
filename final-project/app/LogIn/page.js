@@ -1,15 +1,17 @@
 "use client";
 import Link from "next/link";
 import styled from "styled-components";
+import React from "react";
 import { useState } from "react";
 import { useSelector  , useDispatch} from "react-redux";
 import { addUser } from "@/redux/auth/authSlice";
 import { SelectUser } from "@/redux/auth/authSlice";
-function page() {
+function Page() {
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error , setError] = useState("");
 
   const handleSignIn = async() => {
     const data = {
@@ -34,10 +36,10 @@ function page() {
         } else {
           // Registration failed
           console.error("Registration failed:", responseData.error);
+          setError(responseData.error);
         }
       });
   };
-
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
@@ -52,7 +54,7 @@ function page() {
         <LoginContainer>
           <LoginForm>
             <LoginTitle>Log In</LoginTitle>
-
+            <h2 style={{color : 'red' , margin : 15}}>{error}</h2>
             <LoginLabel>Username</LoginLabel>
             <LoginInput
               type="text"
@@ -88,7 +90,7 @@ function page() {
   );
 }
 
-export default page;
+export default React.memo(Page);
 const Section = styled.h4`
   display: flex;
   justify-content: center;

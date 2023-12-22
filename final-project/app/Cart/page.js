@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import styled from "styled-components";
 
-function page() {
+function Page() {
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
@@ -156,7 +156,7 @@ function page() {
   );
 }
 
-export default page;
+export default React.memo(Page);
 const CartContainer = styled.div`
   display: flex;
   flex-wrap: wrap;

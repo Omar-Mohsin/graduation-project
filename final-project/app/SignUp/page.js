@@ -2,14 +2,15 @@
 import Link from "next/link";
 import styled from "styled-components";
 import { useState } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { SelectUser, addUser } from "@/redux/auth/authSlice";
-const page = () => {
+const Page = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfrimPassword] = useState("");
-
+  const [error, setError] = useState("");
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
   const handleSubmit = () => {
@@ -38,6 +39,7 @@ const page = () => {
           dispatch(addUser({ username, email, password }));
         } else {
           console.error("Registration failed:", responseData.error);
+          setError(responseData.error);
         }
       });
   };
@@ -63,6 +65,9 @@ const page = () => {
         <SignUpContainer>
           <SignUpForm>
             <SignUpTitle>Sign Up</SignUpTitle>
+
+            <h2 style={{color : 'red' , margin : 15}}>{error}</h2>
+
             <SignUpInput
               type="text"
               placeholder="Full Name"
@@ -110,7 +115,7 @@ const page = () => {
   );
 };
 
-export default page;
+export default React.memo(Page);
 const Section = styled.h4`
   display: flex;
   justify-content: center;

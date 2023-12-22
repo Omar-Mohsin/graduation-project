@@ -114,7 +114,7 @@ function Page() {
   );
 }
 
-export default Page;
+export default React.memo(Page);
 
 const Container = styled.div`
   margin: 0 auto;

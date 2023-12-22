@@ -7,7 +7,7 @@ import Chatbot from 'react-chatbot-kit'
 import 'react-chatbot-kit/build/main.css'
 import styled from "styled-components";
 
-function page() {
+function Page() {
   return (
     <Container>
       <div>
@@ -21,7 +21,7 @@ function page() {
   );
 }
 
-export default page;
+export default React.memo(Page);
 
 const Container = styled.div`
 

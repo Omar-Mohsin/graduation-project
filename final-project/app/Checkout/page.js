@@ -193,7 +193,7 @@ function Page() {
   );
 }
 
-export default Page;
+export default React.memo(Page);
 
 const PageContainer = styled.div`
   display: flex;

@@ -44,7 +44,7 @@ function Page() {
   );
 }
 
-export default Page;
+export default React.memo(Page);
 
 const TitlePage = styled.h1`
   text-align: center;

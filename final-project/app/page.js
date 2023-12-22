@@ -16,4 +16,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default React.memo(Page);

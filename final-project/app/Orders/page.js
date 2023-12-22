@@ -1,66 +1,65 @@
 'use client';
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { SelectUser } from "@/redux/auth/authSlice";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
 
-function Page() {
+import { SelectUser } from "@/redux/auth/authSlice";
+
+const fetchOrders = async (userId, setOrders) => {
+  try {
+    const response = await fetch(`https://watermelon1.pythonanywhere.com/orders/api/user-orders/${userId}/`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const jsonData = await response.json();
+    setOrders(jsonData.orders || []);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+const Page = () => {
   const user = useSelector(SelectUser);
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://watermelon1.pythonanywhere.com/orders/api/user-orders/${user.id}/`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const jsonData = await response.json();
-        setOrders(jsonData.orders || []);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
+    if (user?.id) {
+      fetchOrders(user.id, setOrders);
+    }
   }, [user?.id]);
-
-  console.log(orders);
-
-  const sortedOrders = [...orders].sort((a, b) => b.order_id - a.order_id);
 
   return (
     <PageContainer>
-    {user ? (
-      <OrderContainer>
-        {orders.length > 0 ? (
-          sortedOrders.map((order) => (
-            <OrderCard key={order.order_id}>
-              <h1>Order ID: {order.order_id}</h1>
-              <p>Total Price: ${order.total_price.toFixed(2)}</p>
-              <ul>
-                {order.items.map((item, index) => (
-                  <li key={index}>{item.name} - Quantity: {item.quantity}</li>
-                ))}
-              </ul>
-            </OrderCard>
-          ))
+      {user ? (
+        orders.length > 0 ? (
+          <OrderContainer>
+            {orders.map((order) => (
+              <OrderCard key={order.order_id}>
+                <h1>Order ID: {order.order_id}</h1>
+                <p>Total Price: ${order.total_price.toFixed(2)}</p>
+                <ul>
+                  {order.items.map((item, index) => (
+                    <li key={index}>{item.name} - Quantity: {item.quantity}</li>
+                  ))}
+                </ul>
+              </OrderCard>
+            ))}
+          </OrderContainer>
         ) : (
           <LoadingMessage>Loading your orders...</LoadingMessage>
-        )}
-      </OrderContainer>
-    ) : (
-      <p>
-        You are not authorized to access this page{" "}
-        <StyledLink href={"/LogIn"}>please sign in</StyledLink>
-      </p>
-    )}
-  </PageContainer>
+        )
+      ) : (
+        <p>
+          You are not authorized to access this page{" "}
+          <StyledLink href={"/LogIn"}>please sign in</StyledLink>
+        </p>
+      )}
+    </PageContainer>
   );
-}
-export default Page;
+};
+
+export default React.memo(Page);
 
 const PageContainer = styled.div`
   margin-top: 50px;
@@ -112,7 +111,7 @@ const OrderCard = styled.div`
     margin-bottom: 6px;
     color: #888;
   }
-`;
+}`
 
 const LoadingMessage = styled.p`
   color: #3498db;
