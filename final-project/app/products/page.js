@@ -9,6 +9,7 @@ import { SelectUser } from "@/redux/auth/authSlice";
 import axios from "axios";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
 const Page = () => {
   const user = useSelector(SelectUser);
   const products = useSelector(SelectAllProducts);
