@@ -2,17 +2,17 @@
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import { useSelector , useDispatch } from "react-redux";
-import { SelectUser , removeUser } from "@/redux/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { SelectUser, removeUser } from "@/redux/auth/authSlice";
 import Image from "next/image";
-import Logo1 from '../../assert/watermelon.png'
+import Logo1 from "../../assert/watermelon.png";
 function Navbar() {
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
 
-  const handleLogOut = () => { 
+  const handleLogOut = () => {
     dispatch(removeUser());
-  }
+  };
   return (
     <NavbarContainer>
       <Link href="/">
@@ -28,26 +28,28 @@ function Navbar() {
         <Link href="/About">
           <NavLink>About</NavLink>
         </Link>
-            <Link href="/Products">
+        <Link href="/Chat">
+          <NavLink>Chat</NavLink>
+        </Link>
+        <Link href="/Products">
           <NavLink>Products</NavLink>
         </Link>
         <Link href="/Statistics">
           <NavLink>Statistics</NavLink>
         </Link>
-       
+
         <Link href="/Questions">
           <NavLink>Questions</NavLink>
         </Link>
 
         {user ? (
           <>
-          <Link href="/Orders">
-            <NavLink>Orders</NavLink>
-          </Link>
-          <Link href="/Fav">
-          <NavLink>Fav</NavLink>
-
-        </Link>
+            <Link href="/Orders">
+              <NavLink>Orders</NavLink>
+            </Link>
+            <Link href="/Fav">
+              <NavLink>Fav</NavLink>
+            </Link>
           </>
         ) : (
           <></>
@@ -59,10 +61,10 @@ function Navbar() {
 
         {user ? (
           <Link href="/">
-          <NavLink>
-            <button onClick={handleLogOut}>Log Out </button>
-          </NavLink>
-        </Link>
+            <NavLink>
+              <button onClick={handleLogOut}>Log Out </button>
+            </NavLink>
+          </Link>
         ) : (
           <Link href="/LogIn">
             <NavLink>Log In</NavLink>

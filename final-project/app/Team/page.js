@@ -1,27 +1,29 @@
 'use client';
 import React from 'react';
 import styled from 'styled-components';
-import { LinkedIn, GitHub, Facebook } from '@mui/icons-material';
+import { LinkedIn, GitHub } from '@mui/icons-material'; // Removed extra comma
+import Mohammad from '../../assert/mohammad.jpg';
+import Omar from '../../assert/omar.jpeg';
 
 const TeamPage = () => {
   const teamMembers = [
     {
       name: 'Omar Mohsin',
       position: 'Software Developer Engineer at MBC-Shahid',
-      image: 'https://picsum.photos/200/300',
-      linkedin: '',
-      github: '',
-      facebook: '',
+      image: 'http://localhost:3000/_next/static/media/omar.2144722b.jpeg',
+      linkedin: 'https://www.linkedin.com/in/omar-mohsin-411434202/',
+      github: 'https://github.com/Omar-Mohsin',
     },
     {
       name: 'Mohammad Alrubbi',
-      position: 'Software Engineer at Nuummite ',
-      image: 'https://picsum.photos/200/301',
-      linkedin: '',
-      github: '',
-      facebook: '',
+      position: 'Software Engineer at Nuummite',
+      image: 'http://localhost:3000/_next/static/media/mohammad.79e1432f.jpg',
+      linkedin: 'https://www.linkedin.com/in/mohammad-alrubbi-33b911260/',
+      github: 'https://github.com/moALrubbi', // Removed extra backticks
     },
   ];
+  console.log(Omar);
+
 
   return (
     <div>
@@ -39,9 +41,6 @@ const TeamPage = () => {
                 <IconLink href={member.github} target="_blank">
                   <GitHub />
                 </IconLink>
-                <IconLink href={member.facebook} target="_blank">
-                  <Facebook />
-                </IconLink>
               </SocialIcons>
             </MemberInfo>
           </TeamMemberCard>
@@ -50,7 +49,11 @@ const TeamPage = () => {
     </div>
   );
 };
+
 export default React.memo(TeamPage);
+
+
+
 
 const TeamCardsContainer = styled.div`
   height: 100vh;

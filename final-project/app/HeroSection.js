@@ -11,6 +11,7 @@ import { SelectUser } from "@/redux/auth/authSlice";
 import { useSelector } from "react-redux";
 function HeroSection() {
   const user = useSelector(SelectUser);
+
   return (
     <header className="bg-white p-8 " style={{ height: "100vh" }}>
       <div className="container mx-auto grid h-full gap-10 min-h-[60vh] w-full grid-cols-1 items-center lg:grid-cols-2">

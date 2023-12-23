@@ -47,7 +47,7 @@ const Page = () => {
             ))}
           </OrderContainer>
         ) : (
-          <LoadingMessage>Loading your orders...</LoadingMessage>
+          <LoadingMessage>No Orders</LoadingMessage>
         )
       ) : (
         <p>

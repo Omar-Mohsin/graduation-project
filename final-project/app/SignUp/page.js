@@ -13,7 +13,7 @@ const Page = () => {
   const [error, setError] = useState("");
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     const data = {
       username,
       email,
@@ -36,7 +36,6 @@ const Page = () => {
           console.log("Registration successful!");
           dispatch(addUser(responseData));
           window.location.href = "/";
-          dispatch(addUser({ username, email, password }));
         } else {
           console.error("Registration failed:", responseData.error);
           setError(responseData.error);
