@@ -7,8 +7,8 @@ import { addToCart } from "@/redux/cart/cartSlice";
 import styled from "styled-components";
 import { SelectUser } from "@/redux/auth/authSlice";
 import axios from "axios";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const Page = () => {
   const user = useSelector(SelectUser);
@@ -42,29 +42,28 @@ const Page = () => {
     );
   };
 
-
   const removeFaviorite = async (item) => {
-    const data  = { 
+    const data = {
       userId: user.id,
       productId: item.id,
-    }
+    };
 
-    
     try {
-      const response = await fetch(`https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      const response = await fetch(
+        `https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-      });
-      
       if (!response.ok) {
         throw new Error("Failed to remove favorite");
       }
       setForceRender(!forceRender);
-   
     } catch (error) {
       console.error("Error removing favorite:", error.message);
     }
@@ -151,10 +150,46 @@ const Page = () => {
 
             <ProductTitle>{product.name}</ProductTitle>
             <ProductPrice>${product.price}</ProductPrice>
-            <div>
-              <button onClick={() => addToFavorite(product)}></button>
-            </div>
+        
             <div className="mt-4 flex justify-between items-center">
+              {product.stocks === 0 && (
+                <>
+                    {user ? (
+                    isProductInFavorites(product.id) ? (
+                      <FavoriteBorderIcon
+                        style={{
+                          color: "red",
+                          cursor: "pointer",
+                          width: "40%",
+                          fontSize: "30px",
+                        }}
+                        onClick={() => {
+                          addToFavorite(product);
+                        }}
+                      >
+                        Add to Fav
+                      </FavoriteBorderIcon>
+                    ) : (
+                      <FavoriteIcon
+                        style={{
+                          color: "red",
+                          cursor: "pointer",
+                          width: "40%",
+                          fontSize: "30px",
+                        }}
+                        onClick={() => {
+                          removeFaviorite(product);
+                        }}
+                      >
+                        Remove from Fav
+                      </FavoriteIcon>
+                    )
+                  ) : (
+                    <> </>
+                  )}
+                </>
+              )}
+
               {product.stocks === 0 ? (
                 <NoStocksButton>Add to Cart</NoStocksButton>
               ) : (
@@ -167,29 +202,25 @@ const Page = () => {
                     Add to Cart
                   </AddToCartButton>
 
-                  {user 
-                  
-                  ? (
-                  isProductInFavorites(product.id) ? (
-                    <FavoriteBorderIcon
-                      style={{
-                        color: "red",
-                        cursor: "pointer",
-                        width: "40%",
-                        fontSize: "30px",
-                      }}
-                      onClick={() => {
-                        addToFavorite(product);
-                      }}
-                    >
-                      Add to Fav
-                    </FavoriteBorderIcon>
-                  ) : (
-                 
+                  {user ? (
+                    isProductInFavorites(product.id) ? (
+                      <FavoriteBorderIcon
+                        style={{
+                          color: "red",
+                          cursor: "pointer",
+                          width: "40%",
+                          fontSize: "30px",
+                        }}
+                        onClick={() => {
+                          addToFavorite(product);
+                        }}
+                      >
+                        Add to Fav
+                      </FavoriteBorderIcon>
+                    ) : (
                       <FavoriteIcon
                         style={{
                           color: "red",
-                        
                           cursor: "pointer",
                           width: "40%",
                           fontSize: "30px",
@@ -200,10 +231,10 @@ const Page = () => {
                       >
                         Remove from Fav
                       </FavoriteIcon>
-                
-                  )
-                ) : (<> </>)}
-
+                    )
+                  ) : (
+                    <> </>
+                  )}
                 </>
               )}
             </div>
@@ -355,22 +386,4 @@ const SuccessMessage = styled.div`
   z-index: 999;
 `;
 
-const AddToFavButton = styled.button`
-  margin-left: 10px;
-  margin-right: auto;
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: none;
-  width: 100%;
-  height: 50px;
-  border-radius: 99px;
-  cursor: pointer;
-  transition: transform 0.2s, background-color 0.2s;
-  font-weight: 600;
-  background-color: limegreen;
-  color: #fff;
 
-  &:hover {
-    transform: scale(1.1);
-  }
-`;
