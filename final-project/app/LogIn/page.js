@@ -58,6 +58,7 @@ function Page() {
             <LoginLabel>Username</LoginLabel>
             <LoginInput
               type="text"
+              placeholder="Username"
               value={username}
               onChange={handleUsernameChange}
             />
@@ -66,6 +67,7 @@ function Page() {
             <LoginInput
               type="password"
               value={password}
+              placeholder="Password"
               onChange={handlePasswordChange}
             />
 
