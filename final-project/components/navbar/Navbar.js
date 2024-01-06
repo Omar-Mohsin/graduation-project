@@ -31,9 +31,7 @@ function Navbar() {
         <Link href="/Chat">
           <NavLink>Chat</NavLink>
         </Link>
-        <Link href="/Products">
-          <NavLink>Products</NavLink>
-        </Link>
+
         <Link href="/Statistics">
           <NavLink>Statistics</NavLink>
         </Link>
@@ -55,6 +53,9 @@ function Navbar() {
           <></>
         )}
 
+        <Link href="/Products">
+          <NavLink>Products</NavLink>
+        </Link>
         <Link href="/Cart">
           <NavLink>Cart</NavLink>
         </Link>
