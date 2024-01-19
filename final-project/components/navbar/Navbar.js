@@ -23,7 +23,7 @@ function Navbar() {
   return (
     <nav className="bg-black flex justify-between items-center p-4 md:p-6 h-16">
       <Link href="/">
-        <div className="logo-container hover:translate-y  transition-transform duration-300">
+        <div className="logo-container hover:translate-y transition-transform duration-500">
           <Image src={Logo1} width={60} height={60} alt="watermelon logo" />
         </div>
       </Link>
