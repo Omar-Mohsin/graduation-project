@@ -1,132 +1,108 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { SelectUser, removeUser } from "@/redux/auth/authSlice";
 import Image from "next/image";
 import Logo1 from "../../assert/watermelon.png";
+import { useSelector, useDispatch } from "react-redux";
+import { SelectUser, removeUser } from "@/redux/auth/authSlice";
+import "./nav.css";
+
 function Navbar() {
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const user = useSelector(SelectUser);
   const dispatch = useDispatch();
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleLogOut = () => {
     dispatch(removeUser());
   };
+
   return (
-    <NavbarContainer>
+    <nav className="bg-black flex justify-between items-center p-4 md:p-6 h-16">
       <Link href="/">
-        <Logo>
+        <div className="logo-container hover:translate-y  transition-transform duration-300">
           <Image src={Logo1} width={60} height={60} alt="watermelon logo" />
-        </Logo>
+        </div>
       </Link>
-      <NavLinks>
-        <Link href="/Team">
-          <NavLink>Team</NavLink>
-        </Link>
-
-        <Link href="/About">
-          <NavLink>About</NavLink>
-        </Link>
-        <Link href="/Chat">
-          <NavLink>Chat</NavLink>
-        </Link>
-
-        <Link href="/Statistics">
-          <NavLink>Statistics</NavLink>
-        </Link>
-
-        <Link href="/Questions">
-          <NavLink>Questions</NavLink>
-        </Link>
-
-        {user ? (
+      <div className="hidden md:flex gap-6">
+        <NavLink href="/Team">Team</NavLink>
+        {user && (
           <>
-            <Link href="/Orders">
-              <NavLink>Orders</NavLink>
-            </Link>
-            <Link href="/Fav">
-              <NavLink>Fav</NavLink>
-            </Link>
+            <NavLink href="/Orders">Orders</NavLink>
+            <NavLink href="/Fav">Fav</NavLink>
           </>
-        ) : (
-          <></>
         )}
-
-        <Link href="/Products">
-          <NavLink>Products</NavLink>
-        </Link>
-        <Link href="/Cart">
-          <NavLink>Cart</NavLink>
-        </Link>
-
+        <NavLink href="/About">About</NavLink>
+        <NavLink href="/Chat">Chat</NavLink>
+        <NavLink href="/Statistics">Statistics</NavLink>
+        <NavLink href="/Questions">Questions</NavLink>
+        <NavLink href="/Products">Products</NavLink>
+        <NavLink href="/Cart">Cart</NavLink>
         {user ? (
-          <Link href="/">
-            <NavLink>
-              <button onClick={handleLogOut}>Log Out </button>
-            </NavLink>
-          </Link>
+          <button
+            onClick={handleLogOut}
+            className="text-white hover:text-gray-300"
+          >
+            Log Out
+          </button>
         ) : (
-          <Link href="/LogIn">
-            <NavLink>Log In</NavLink>
-          </Link>
+          <NavLink href="/LogIn">Log In</NavLink>
         )}
-      </NavLinks>
-    </NavbarContainer>
+      </div>
+      <button className="md:hidden text-white" onClick={toggleMobileMenu}>
+        {isMobileMenuOpen ? "Close" : "Menu"}
+      </button>
+      {isMobileMenuOpen && (
+  <div className="md:hidden flex flex-col bg-black text-white p-4 z-50 absolute items-center top-16 left-0 w-full shadow-lg">
+    <Link href="/Team" className="menu-item text-xl mb-4">
+      Team
+    </Link>
+    <Link href="/About" className="menu-item text-xl mb-4">
+      About
+    </Link>
+    <Link href="/Chat" className="menu-item text-xl mb-4">
+      Chat
+    </Link>
+    <Link href="/Product" className="menu-item text-xl mb-4">
+      Product
+    </Link>
+    <Link href="/Statistics" className="menu-item text-xl  mb-4">
+      Statistics
+    </Link>
+    <Link href="/Questions" className="menu-item text-xl mb-4">
+      Questions
+    </Link>
+    {user && (
+      <Link href="/Fav" className="menu-item text-xl mb-4">
+        Fav
+      </Link>
+    )}
+    <Link href="/Cart" className="menu-item text-xl mb-4">
+      Cart
+    </Link>
+    {user ? (
+      <Link href="/" onClick={handleLogOut} className="menu-item text-xl  ">
+        Log Out
+      </Link>
+    ) : (
+      <Link href="/LogIn" className="menu-item text-xl">
+        Log In
+      </Link>
+    )}
+  </div>
+)}
+
+    </nav>
   );
 }
 
+const NavLink = ({ href, children }) => (
+  <Link href={href} className="text-white hover:text-gray-300">
+    {children}
+  </Link>
+);
+
 export default Navbar;
-
-const NavbarContainer = styled.div`
-  background-color: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px;
-  height: 70px;
-  top: 0;
-  width: 100%;
-`;
-
-const Logo = styled.div`
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  transform: translateY(0);
-  transition: transform 0.3s ease-in-out;
-
-  &:hover {
-    color: #fff;
-    transform: translateY(-5px);
-  }
-`;
-
-const NavLinks = styled.div`
-  display: flex;
-  gap: 20px;
-`;
-
-const NavLink = styled.p`
-  color: white;
-  text-decoration: none;
-  position: relative;
-  transition: color 0.3s ease-in-out;
-  font-size: 18px;
-  &:hover::before {
-    left: 0;
-    width: 100%;
-    background-color: white;
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: transparent;
-    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  }
-`;
