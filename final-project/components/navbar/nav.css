@@ -1,11 +1,11 @@
-.logo-container:hover {
-    transform: translateY(-1rem); /* Adjust the value as needed for the desired upward movement */
-  }
-  .menu-item {
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .menu-item:hover {
-    transform: scale(1.05);
-  }
-  
+  .logo-container:hover {
+      transform: translateY(-1rem); /* Adjust the value as needed for the desired upward movement */
+    }
+    .menu-item {
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .menu-item:hover {
+      transform: scale(1.05);
+    }
+    

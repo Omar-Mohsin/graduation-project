@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Link from "next/link";
@@ -8,39 +8,44 @@ import { SelectUser } from "@/redux/auth/authSlice";
 
 const fetchOrders = async (userId, setOrders) => {
   try {
-    const response = await fetch(`https://watermelon1.pythonanywhere.com/orders/api/user-orders/${userId}/`);
+    const response = await fetch(
+      `https://watermelon1.pythonanywhere.com/orders/api/user-orders/${userId}/`
+    );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
     const jsonData = await response.json();
     setOrders(jsonData.orders || []);
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error("Error fetching data:", error);
   }
 };
 
 const Page = () => {
   const user = useSelector(SelectUser);
   const [orders, setOrders] = useState([]);
-
+  const sortedOrders = orders.sort((a, b) => b.order_id - a.order_id);
   useEffect(() => {
     if (user?.id) {
       fetchOrders(user.id, setOrders);
     }
   }, [user?.id]);
 
+  console.log(orders);
   return (
     <PageContainer>
       {user ? (
         orders.length > 0 ? (
           <OrderContainer>
-            {orders.map((order) => (
+            {sortedOrders.map((order) => (
               <OrderCard key={order.order_id}>
                 <h1>Order ID: {order.order_id}</h1>
                 <p>Total Price: ${order.total_price.toFixed(2)}</p>
                 <ul>
                   {order.items.map((item, index) => (
-                    <li key={index}>{item.name} - Quantity: {item.quantity}</li>
+                    <li key={index}>
+                      {item.name} - Quantity: {item.quantity}
+                    </li>
                   ))}
                 </ul>
               </OrderCard>
@@ -111,7 +116,7 @@ const OrderCard = styled.div`
     margin-bottom: 6px;
     color: #888;
   }
-}`
+}`;
 
 const LoadingMessage = styled.p`
   color: #3498db;

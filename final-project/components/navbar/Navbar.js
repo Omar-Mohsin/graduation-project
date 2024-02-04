@@ -28,19 +28,21 @@ function Navbar() {
         </div>
       </Link>
       <div className="hidden md:flex gap-6">
-        <NavLink href="/Team">Team</NavLink>
+        <NavLink href="/Products">Products</NavLink>
+        <NavLink href="/Cart">Cart</NavLink>
+
         {user && (
           <>
             <NavLink href="/Orders">Orders</NavLink>
             <NavLink href="/Fav">Fav</NavLink>
           </>
         )}
-        <NavLink href="/About">About</NavLink>
         <NavLink href="/Chat">Chat</NavLink>
         <NavLink href="/Statistics">Statistics</NavLink>
         <NavLink href="/Questions">Questions</NavLink>
-        <NavLink href="/Products">Products</NavLink>
-        <NavLink href="/Cart">Cart</NavLink>
+        <NavLink href="/Team">Team</NavLink>
+        <NavLink href="/About">About</NavLink>
+
         {user ? (
           <button
             onClick={handleLogOut}
@@ -57,36 +59,44 @@ function Navbar() {
       </button>
       {isMobileMenuOpen && (
   <div className="md:hidden flex flex-col bg-black text-white p-4 z-50 absolute items-center top-16 left-0 w-full shadow-lg">
-    <Link href="/Team" className="menu-item text-xl mb-4">
-      Team
+    <Link href="/Products" className="menu-item text-xl mb-4">
+      Products
     </Link>
-    <Link href="/About" className="menu-item text-xl mb-4">
-      About
+    <Link href="/Cart" className="menu-item text-xl mb-4">
+    Cart
     </Link>
     <Link href="/Chat" className="menu-item text-xl mb-4">
       Chat
     </Link>
-    <Link href="/Product" className="menu-item text-xl mb-4">
-      Product
+    {user && (
+     <>
+    <Link href="/Fav" className="menu-item text-xl mb-4">
+    Fav
     </Link>
+    <Link href="/Orders" className="menu-item text-xl mb-4">
+    Orders
+    </Link>
+    </>
+    )}
+    
     <Link href="/Statistics" className="menu-item text-xl  mb-4">
       Statistics
     </Link>
     <Link href="/Questions" className="menu-item text-xl mb-4">
       Questions
     </Link>
-    {user && (
-      <Link href="/Fav" className="menu-item text-xl mb-4">
-        Fav
+    <Link href="/Team" className="menu-item text-xl mb-4">
+       Team
       </Link>
-    )}
-    <Link href="/Cart" className="menu-item text-xl mb-4">
-      Cart
+    <Link href="/About" className="menu-item text-xl mb-4">
+      About
     </Link>
     {user ? (
+     
       <Link href="/" onClick={handleLogOut} className="menu-item text-xl  ">
         Log Out
       </Link>
+    
     ) : (
       <Link href="/LogIn" className="menu-item text-xl">
         Log In
